@@ -2,10 +2,8 @@
 import pytest
 from typing import List
 from pathlib import Path
-
 # --- Third Party Imports -----------------------------------------------------
 # None
-
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.worksheet_columns as wc
 import rtm.work_items as wi

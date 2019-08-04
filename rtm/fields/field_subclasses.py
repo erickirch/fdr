@@ -4,10 +4,9 @@ from rtm.fields.field import Field
 from rtm.worksheet_columns import WorksheetColumn
 # --- Third Party Imports -----------------------------------------------------
 # None
-
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.fields.validation as val
-from rtm.fields import Field
+from rtm.fields.field import Field
 from rtm.fields.validation_results import ValidationResult
 
 
@@ -85,10 +84,6 @@ class CTQ(Field):
 
     def _validate_this_field(self) -> List[ValidationResult]:
         return []
-
-
-@collect_field
-class Devices(Field):
 
 
 @collect_field

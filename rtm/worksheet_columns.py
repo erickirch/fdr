@@ -1,10 +1,8 @@
 # --- Standard Library Imports ------------------------------------------------
 from collections import namedtuple
 from typing import List
-
 # --- Third Party Imports -----------------------------------------------------
 import openpyxl
-
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.exceptions import RTMValidatorFileError
 

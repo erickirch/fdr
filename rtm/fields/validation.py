@@ -38,7 +38,7 @@ def val_cells_not_empty(values) -> ValidationResult:
     title = "Not Empty"
     indices = []
     for index, value in enumerate(values):
-        if not value:
+        if cell_empty(value):
             indices.append(index)
     if not indices:
         score = 'Pass'
@@ -47,6 +47,13 @@ def val_cells_not_empty(values) -> ValidationResult:
         score = 'Error'
         explanation = 'Action Required. The following rows are blank:'
     return ValidationResult(score, title, explanation, indices)
+
+
+def cell_empty(value) -> bool:
+    if not value:
+        return True
+    return False
+
 
 
 def get_row(index):
