@@ -6,7 +6,7 @@ import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.exceptions import RTMValidatorError
-from rtm.fields.field_subclasses import field_classes
+from rtm.fields.fields import field_classes
 
 
 @pytest.mark.parametrize("field_class", field_classes)

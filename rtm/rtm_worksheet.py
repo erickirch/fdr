@@ -6,7 +6,7 @@ import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.fields.field import Field
-from rtm.fields.field_subclasses import field_classes as fc
+from rtm.fields.fields import field_classes as fc
 from rtm.worksheet_columns import get_worksheet_columns
 
 
