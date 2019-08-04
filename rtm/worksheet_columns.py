@@ -29,8 +29,8 @@ def get_worksheet_columns(path, worksheet_name):
     ws_data = []
     start_column_num = 1
     for index, col in enumerate(range(start_column_num, ws.max_column + 1)):
-        column_header = ws.cell(1, col).value_at_index
-        column_body = tuple(ws.cell(row, col).value_at_index for row in range(2, ws.max_row + 1))
+        column_header = ws.cell(1, col).value
+        column_body = tuple(ws.cell(row, col).value for row in range(2, ws.max_row + 1))
         ws_column = WorksheetColumn(
             header=column_header, body=column_body, index=index, column=col
         )
