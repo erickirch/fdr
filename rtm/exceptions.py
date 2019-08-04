@@ -16,5 +16,6 @@ class RTMValidatorFileError(RTMValidatorError):
 class UninitializedError(Exception):
     pass
 
+
 class Uninitialized(RTMValidatorError):
     pass

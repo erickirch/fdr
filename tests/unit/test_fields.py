@@ -1,6 +1,12 @@
+# --- Standard Library Imports ------------------------------------------------
+# None
+
+# --- Third Party Imports -----------------------------------------------------
 import pytest
-from rtm.fields.field_subclasses import field_classes
+
+# --- Intra-Package Imports ---------------------------------------------------
 from rtm.exceptions import RTMValidatorError
+from rtm.fields.field_subclasses import field_classes
 
 
 @pytest.mark.parametrize("field_class", field_classes)

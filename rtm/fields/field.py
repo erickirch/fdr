@@ -1,8 +1,10 @@
 # --- Standard Library Imports ------------------------------------------------
-from typing import List
 from contextlib import contextmanager
+from typing import List
+
 # --- Third Party Imports -----------------------------------------------------
 # None
+
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.fields.validation as val
 from rtm.fields.validation_results import print_validation_report

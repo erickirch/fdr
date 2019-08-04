@@ -1,7 +1,14 @@
-from rtm.rtm_worksheet import RTMWorksheet
+# --- Standard Library Imports ------------------------------------------------
+# None
+
+# --- Third Party Imports -----------------------------------------------------
+# None
+
+# --- Intra-Package Imports ---------------------------------------------------
+import rtm.worksheet_columns as wc
 from rtm.fields.field import Field
 from rtm.fields.field_subclasses import field_classes as fc
-import rtm.worksheet_columns as wc
+from rtm.rtm_worksheet import RTMWorksheet
 
 
 def test_initialize_fields(worksheet_columns):

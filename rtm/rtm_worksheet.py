@@ -1,8 +1,9 @@
 # --- Standard Library Imports ------------------------------------------------
 from typing import List
+
 # --- Third Party Imports -----------------------------------------------------
 import click
-from typing import List
+
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.fields.field import Field
 from rtm.fields.field_subclasses import field_classes as fc

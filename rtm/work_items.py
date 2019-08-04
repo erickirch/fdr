@@ -1,21 +1,20 @@
 # --- Standard Library Imports ------------------------------------------------
-from collections import OrderedDict
-from collections.abc import Sequence
-from typing import List
+import collections
 from contextlib import contextmanager
+from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.fields.validation import cell_empty
 from rtm.exceptions import UninitializedError
+from rtm.fields.validation import cell_empty
 
 
 _fields = None
 
 
-class WorkItems(Sequence):
+class WorkItems(collections.abc.Sequence):
     def __init__(self, cascade_block_body: List[list]):
         self._initialize_work_items(cascade_block_body)
         self._calculate_parents()
@@ -141,7 +140,7 @@ class WorkItem:
         self._parent = value_
 
 
-class OrderedDictList(OrderedDict):
+class OrderedDictList(collections.OrderedDict):
     def value_at_index(self, index_: int):
         try:
             return list(self.values())[index_]

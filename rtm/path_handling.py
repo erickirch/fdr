@@ -1,7 +1,7 @@
 # --- Standard Library Imports ------------------------------------------------
 import tkinter as tk
-from tkinter import filedialog
 from pathlib import Path
+from tkinter import filedialog
 
 # --- Third Party Imports -----------------------------------------------------
 import click
