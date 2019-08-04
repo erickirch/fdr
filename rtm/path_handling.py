@@ -1,7 +1,12 @@
-import click
+# --- Standard Library Imports ------------------------------------------------
 import tkinter as tk
 from tkinter import filedialog
 from pathlib import Path
+
+# --- Third Party Imports -----------------------------------------------------
+import click
+
+# --- Intra-Package Imports ---------------------------------------------------
 import rtm.exceptions as exc
 
 

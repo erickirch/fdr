@@ -1,5 +1,11 @@
-import click
+# --- Standard Library Imports ------------------------------------------------
 from typing import List
+
+# --- Third Party Imports -----------------------------------------------------
+import click
+
+# --- Intra-Package Imports ---------------------------------------------------
+# None
 
 
 class ValidationResult:
@@ -10,7 +16,7 @@ class ValidationResult:
         self._explanation = explanation
         self._set_indices(nonconforming_indices)
 
-    def _set_indices(self, indices):
+    def _set_indices(self, indices: List[int]):
         if indices:
             self.indices = tuple(indices)
         else:
@@ -28,7 +34,8 @@ class ValidationResult:
         if not self.indices:
             return ''
         first_row = 2  # this is the row # directly after the headers
-        return ' ' + str(index + first_row for index in self.indices)
+        rows = (index + first_row for index in self.indices)
+        return ' ' + str(rows)
 
     def print(self) -> None:
         # --- Print Score in Color ------------------------------------------------

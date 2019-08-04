@@ -1,7 +1,12 @@
+# --- Standard Library Imports ------------------------------------------------
+from typing import List
+# --- Third Party Imports -----------------------------------------------------
 import click
 from rtm.fields.field import Field
 from rtm.fields.field_subclasses import field_classes as fc
 from typing import List
+# --- Intra-Package Imports ---------------------------------------------------
+from rtm.fields import Field, field_classes as fc
 from rtm.worksheet_columns import get_worksheet_columns
 
 

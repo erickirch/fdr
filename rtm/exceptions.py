@@ -11,3 +11,10 @@ class RTMValidatorFileError(RTMValidatorError):
         missing worksheet
     """
     pass
+
+
+class UninitializedError(Exception):
+    pass
+
+class Uninitialized(RTMValidatorError):
+    pass

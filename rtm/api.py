@@ -1,5 +1,10 @@
-import click
+# --- Standard Library Imports ------------------------------------------------
 import time
+
+# --- Third Party Imports -----------------------------------------------------
+import click
+
+# --- Intra-Package Imports ---------------------------------------------------
 from rtm.path_handling import get_rtm_path
 from rtm.rtm_worksheet import RTMWorksheet
 from rtm.exceptions import RTMValidatorError

@@ -60,6 +60,16 @@ ID
 
 Cascade Block
 '''''''''''''
+- must contain at a minimum these columns:
+    - Procedure Step
+    - Need
+    - Design Input
+    - Solution Level 1
+- optionally, may also contain these columns:
+    - Solution Level 2
+    - Solution Level 3
+    - ...
+    - Solution Level n
 - one and only one cell gets marked (WorkItemObject)
 - no missing steps (CascadeObject)
 - each requirements path starts with Procedure Step (CascadeObject)

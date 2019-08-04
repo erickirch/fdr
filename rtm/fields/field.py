@@ -1,22 +1,23 @@
+# --- Standard Library Imports ------------------------------------------------
+from typing import List
+from contextlib import contextmanager
+# --- Third Party Imports -----------------------------------------------------
+# None
+# --- Intra-Package Imports ---------------------------------------------------
 import rtm.fields.validation as val
 from rtm.fields.validation_results import print_validation_report
-from typing import List
 from rtm.worksheet_columns import get_matching_worksheet_columns
+
+
+_worksheet_columns = None
 
 
 class Field:
 
     field_name = None
 
-    def __init__(self, all_worksheet_columns):
-
-        # --- Get All Matching Columns ----------------------------------------
-        # matching_worksheet_columns = [
-        #     (index, ws_col)
-        #     for index, ws_col in enumerate(all_worksheet_columns)
-        #     if ws_col.header.lower() == self.get_field_name().lower()
-        # ]
-        matching_worksheet_columns = get_matching_worksheet_columns(all_worksheet_columns, self.get_field_name())
+    def __init__(self, _worksheet_columns):
+        matching_worksheet_columns = get_matching_worksheet_columns(_worksheet_columns, self.get_field_name())
 
         # --- Set Defaults ----------------------------------------------------
         self._indices = None  # Used in later check of relative column position
@@ -65,11 +66,15 @@ class Field:
         return cls.field_name
 
 
+
+
+@contextmanager
+def set_worksheet_columns(worksheet_columns):
+    global _worksheet_columns
+    _worksheet_columns = worksheet_columns
+    yield
+    _worksheet_columns = None
+
+
 if __name__ == "__main__":
-    list = ['1']
-    second = '2'
-    third = ['3', '4']
-    list.append(second)
-    print(list)
-    # list.append(third)
-    print(list+third)
+    pass

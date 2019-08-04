@@ -9,7 +9,7 @@ boolean true or false
 # functions start here
 
 # Any
-# take value in and return it with no carriage returns (\n). This will make strings easier to evaluate
+# take value_at_index in and return it with no carriage returns (\n). This will make strings easier to evaluate
 def remove_carriage_returns(value):
     value = value.replace("\n", "")
     return value
@@ -24,7 +24,7 @@ def is_empty(value):
 
 
 # Any
-# check if value is N/A.
+# check if value_at_index is N/A.
 # FDR rules: type of requirement/other circumstances may/may not allow N/A in certain fc
 def is_notapplic(value):
     # remove whitespace for direct string comparison. e.g. 'n / a ' becomes 'n/a'
@@ -37,7 +37,7 @@ def is_notapplic(value):
 
 
 # Any
-# check if value is explicitly a hyphen
+# check if value_at_index is explicitly a hyphen
 # FDR rules: if row is a procedure step, all columns besides ID, cascade visualizer, cascade level and requirement
 #   statement should be a hyphen
 def is_hypen(value):
@@ -50,7 +50,7 @@ def is_hypen(value):
 
 
 # Any
-# check if value is yes
+# check if value_at_index is yes
 def is_yes(value):
     # remove whitespace for direct string comparison. e.g. 'yes ' becomes 'yes'
     value = value.replace(" ", "")
@@ -61,7 +61,7 @@ def is_yes(value):
 
 
 # Any
-# check if value is no
+# check if value_at_index is no
 def is_no(value):
     # remove whitespace for direct string comparison. e.g. 'no ' becomes 'no'
     value = value.replace(" ", "")
@@ -72,7 +72,7 @@ def is_no(value):
 
 
 # Any
-# check if value contains 'not required' in its text
+# check if value_at_index contains 'not required' in its text
 # FDR rules: some fc are not required. e.g. validation is not required if requirement is a business need
 def has_not_required(value):
     if value.lower().find("not required") != -1:
@@ -82,7 +82,7 @@ def has_not_required(value):
 
 
 # ID
-# check that value has a capital P as the first character.
+# check that value_at_index has a capital P as the first character.
 # FDR rules: recommended ID formatting for procedure steps and procedure based requirements follow a naming convention.
 #   e.g. P010, P020, etc. for procedure steps and P010-020 for procedure based requirements
 def starts_with_p(value):
@@ -93,7 +93,7 @@ def starts_with_p(value):
 
 
 # ID
-# check if value has integers following the first letter
+# check if value_at_index has integers following the first letter
 # FDR rules: recommended ID formatting for procedure steps follow a naming convention.
 #   e.g. P010, P020, etc. for procedure steps
 def has_digits_after_first(value):
@@ -101,7 +101,7 @@ def has_digits_after_first(value):
 
 
 # ID
-# check if value has 3 integers following the first character. First char is omitted
+# check if value_at_index has 3 integers following the first character. First char is omitted
 # FDR rules: recommended ID formatting for procedure steps follow a naming convention.
 #   e.g. P010, P020, etc. for procedure steps
 def has_three_digits(value):
@@ -113,7 +113,7 @@ def has_three_digits(value):
 
 
 # ID
-# check if value has 6 integers following the first character.
+# check if value_at_index has 6 integers following the first character.
 # FDR rules: recommended ID formatting for procedure based requirements follow a naming convention.
 #   e.g. P010-020, P010-030, etc. for procedure based requirements
 # NOTE: First char is omitted. Assumes there is a dash and removes it
@@ -207,7 +207,7 @@ def has_lower_f(value):
 # FDR rules: cascade level defines the type of requirement and can only contain one of the following strings:
 # procedure step, user need, risk need, business need, design input or design output
 def is_procedure_step(value):
-    # remove whitespace at the beginning and end of the string and test for value
+    # remove whitespace at the beginning and end of the string and test for value_at_index
     if value.strip().lower() == "procedure step":
         return True
     else:
@@ -219,7 +219,7 @@ def is_procedure_step(value):
 # FDR rules: cascade level defines the type of requirement and can only contain one of the following strings:
 # procedure step, user need, risk need, business need, design input or design output
 def is_user_need(value):
-    # remove whitespace at the beginning and end of the string and test for value
+    # remove whitespace at the beginning and end of the string and test for value_at_index
     if value.strip().lower() == "user need":
         return True
     else:
@@ -231,7 +231,7 @@ def is_user_need(value):
 # FDR rules: cascade level defines the type of requirement and can only contain one of the following strings:
 # procedure step, user need, risk need, business need, design input or design output
 def is_risk_need(value):
-    # remove whitespace at the beginning and end of the string and test for value
+    # remove whitespace at the beginning and end of the string and test for value_at_index
     if value.strip().lower() == "risk need":
         return True
     else:
@@ -243,7 +243,7 @@ def is_risk_need(value):
 # FDR rules: cascade level defines the type of requirement and can only contain one of the following strings:
 # procedure step, user need, risk need, business need, design input or design output
 def is_business_need(value):
-    # remove whitespace at the beginning and end of the string and test for value
+    # remove whitespace at the beginning and end of the string and test for value_at_index
     if value.strip().lower() == "business need":
         return True
     else:
@@ -255,7 +255,7 @@ def is_business_need(value):
 # FDR rules: cascade level defines the type of requirement and can only contain one of the following strings:
 # procedure step, user need, risk need, business need, design input or design output
 def is_design_input(value):
-    # remove whitespace at the beginning and end of the string and test for value
+    # remove whitespace at the beginning and end of the string and test for value_at_index
     if value.strip().lower() == "design input":
         return True
     else:
@@ -267,7 +267,7 @@ def is_design_input(value):
 # FDR rules: cascade level defines the type of requirement and can only contain one of the following strings:
 # procedure step, user need, risk need, business need, design input or design output
 def is_design_output(value):
-    # remove whitespace at the beginning and end of the string and test for value
+    # remove whitespace at the beginning and end of the string and test for value_at_index
     if value.strip().lower() == "design output solution":
         return True
     else:
@@ -352,7 +352,7 @@ def has_ctq_numbers(value):
     while ctq_index != -1:
         # add 1 to ctq_counter, if there were no CTQs, the while condition would not be met.
         ctq_count += 1
-        # slice value from after "ctq"
+        # slice value_at_index from after "ctq"
         value = value[ctq_index + 3:]
         # if the next two characters are numbers (they should be if formatted correctly)
         if value[0:2].isdigit() is True:
@@ -486,7 +486,7 @@ def parent_ids(value):
     while value.find("#Parent") != -1:
         # find the _get_index of the child hashtag
         hash_index = value.find("#Parent")
-        # slice value from the hash_index + 2 (to account for capital P at the beginning of Parent) to the end
+        # slice value_at_index from the hash_index + 2 (to account for capital P at the beginning of Parent) to the end
         value = value[hash_index+2:]
         # find the beginning of the ID by searching for P
         id_start_index = value.find("P")

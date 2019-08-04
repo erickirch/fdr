@@ -8,6 +8,7 @@ from pathlib import Path
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.worksheet_columns as wc
+import rtm.work_items as wi
 from rtm.fields.validation import example_results
 from rtm.fields.validation_results import ValidationResult
 
@@ -51,3 +52,6 @@ def example_val_results() -> List[ValidationResult]:
 @pytest.fixture(scope="session")
 def ws_cols_from_test_validation(rtm_path):
     return wc.get_worksheet_columns(rtm_path, worksheet_name='test_validation')
+
+# @pytest.fixture(scope="session")
+# def
