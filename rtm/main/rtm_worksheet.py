@@ -1,35 +1,27 @@
 # --- Standard Library Imports ------------------------------------------------
-from typing import List
+# None
 
 # --- Third Party Imports -----------------------------------------------------
-import click
+# None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.fields.field_base import Field
-from rtm.fields.fields import field_classes as fc
-from rtm.worksheet_data_containers.worksheet_columns import get_worksheet_columns
+from rtm.containers import field_base
+from rtm.containers import fields as f
+from rtm.containers import worksheet_columns as wc
+from rtm.containers import work_items as wi
 
 
 class RTMWorksheet:
 
-    # Initialize each field with its data
     def __init__(self, path):
-        worksheet_columns = get_worksheet_columns(
-            path, worksheet_name="Procedure Based Requirements"
-        )
-        self.fields = self._initialize_fields(fc, worksheet_columns)
-
-    @staticmethod
-    def _initialize_fields(field_classes, worksheet_columns) -> List[Field]:
-        """Get list of field objects that each contain their portion of the worksheet_columns"""
-        fields = []
-        with click.progressbar(field_classes) as bar:
-            #     fc.append(field(worksheet_columns))
-            # return
-            for field in bar:
-                fields.append(field(worksheet_columns))
-            # fields = [field(worksheet_columns) for field in bar]
-        return fields
+        # --- Get worksheet columns -------------------------------------------
+        worksheet_columns = wc.get_worksheet_columns(path, "Procedure Based Requirements")
+        # --- Initialize worksheet fields -------------------------------------
+        with field_base.set_worksheet_columns(worksheet_columns):
+            self.fields = [Field() for Field in f.field_classes]
+        # --- Initialize work items (i.e. rows) -------------------------------
+        with wi.set_fields(self.fields):
+            self.work_items = wi.WorkItems()
 
     def validate(self):
         # --- Check Field Sorting ---------------------------------------------

@@ -6,7 +6,7 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.validation.validation as val
-from rtm.fields.field_base import Field
+from rtm.worksheet_data_containers.field_base import Field
 from rtm.validation.validator_output import ValidationResult
 
 

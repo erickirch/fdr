@@ -6,8 +6,8 @@
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.worksheet_data_containers.worksheet_columns as wc
-from rtm.fields.field_base import Field
-from rtm.fields.fields import field_classes as fc
+from rtm.worksheet_data_containers.field_base import Field
+from rtm.worksheet_data_containers.fields import field_classes as fc
 from rtm.main.rtm_worksheet import RTMWorksheet
 
 
