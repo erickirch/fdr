@@ -7,8 +7,8 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.exceptions import UninitializedError
-from rtm.fields.validation import cell_empty
+from rtm.main.exceptions import UninitializedError
+from rtm.validation.validation import cell_empty
 
 
 _fields = None

@@ -7,7 +7,7 @@ from tkinter import filedialog
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.exceptions as exc
+import rtm.main.exceptions as exc
 
 
 def get_rtm_path(path_option='default') -> Path:

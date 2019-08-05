@@ -5,7 +5,7 @@
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.fields.validator_output as vr
+import rtm.validation.validator_output as vr
 
 
 def test_print_validation_report(example_val_results):

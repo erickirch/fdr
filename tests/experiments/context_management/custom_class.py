@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from rtm.exceptions import UninitializedError
+from rtm.main.exceptions import UninitializedError
 
 count = None
 

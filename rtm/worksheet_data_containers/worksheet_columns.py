@@ -6,7 +6,7 @@ from typing import List
 import openpyxl
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.exceptions import RTMValidatorFileError
+from rtm.main.exceptions import RTMValidatorFileError
 
 
 WorksheetColumn = namedtuple("WorksheetColumn", "header body index column")

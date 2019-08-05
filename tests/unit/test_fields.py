@@ -5,7 +5,7 @@
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.exceptions import RTMValidatorError
+from rtm.main.exceptions import RTMValidatorError
 from rtm.fields.fields import field_classes
 
 

@@ -6,9 +6,9 @@ from typing import List
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.worksheet_columns as wc
-from rtm.fields.validation import example_results
-from rtm.fields.validator_output import ValidationResult
+import rtm.worksheet_data_containers.worksheet_columns as wc
+from rtm.validation.validation import example_results
+from rtm.validation.validator_output import ValidationResult
 
 
 @pytest.fixture(scope="session")

@@ -5,9 +5,9 @@ import time
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.exceptions import RTMValidatorError
-from rtm.path_handling import get_rtm_path
-from rtm.rtm_worksheet import RTMWorksheet
+from rtm.main.exceptions import RTMValidatorError
+from rtm.main.path_handling import get_rtm_path
+from rtm.main.rtm_worksheet import RTMWorksheet
 
 
 def validate(path_option='default'):

@@ -5,7 +5,7 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.fields.validator_output import ValidationResult
+from rtm.validation.validator_output import ValidationResult
 
 
 def val_column_sort(correct_position) -> ValidationResult:

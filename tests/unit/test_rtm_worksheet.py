@@ -5,10 +5,10 @@
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.worksheet_columns as wc
+import rtm.worksheet_data_containers.worksheet_columns as wc
 from rtm.fields.field_base import Field
 from rtm.fields.fields import field_classes as fc
-from rtm.rtm_worksheet import RTMWorksheet
+from rtm.main.rtm_worksheet import RTMWorksheet
 
 
 def test_initialize_fields(worksheet_columns):

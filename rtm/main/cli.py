@@ -5,7 +5,7 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm import api
+from rtm.main import api
 
 
 @click.command()
