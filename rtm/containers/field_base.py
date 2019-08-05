@@ -7,9 +7,10 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.validation.validation as val
-# from rtm.validation.validator_output import print_validation_report
+import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
+from rtm.main.exceptions import UninitializedError
+from rtm.validate import validator_output
 
 
 _worksheet_columns = None
@@ -20,37 +21,58 @@ class Field(metaclass=abc.ABCMeta):
     def validate(self):
         return
 
+    @abc.abstractmethod
+    def print(self):
+        return
+
 
 class SingleColumnField(Field):
 
     field_name = None
 
     def __init__(self):
-        matching_worksheet_columns = get_matching_worksheet_columns(_worksheet_columns, self.get_field_name())
+
+        # --- Get matching columns --------------------------------------------
+        matching_worksheet_columns = get_matching_worksheet_columns(
+            self._get_worksheet_columns(),
+            self.get_field_name()
+        )
 
         # --- Set Defaults ----------------------------------------------------
         self._indices = None  # Used in later check of relative column position
         self._body = None  # column data
-        self._correct_position = None
+        self._correct_position = None  # Checked during the Validation step
+        self._val_results = None
 
         # --- Override defaults if matches are found --------------------------
         if len(matching_worksheet_columns) >= 1:
-            # indices, worksheet_columns = zip(*matching_worksheet_columns)
             # Get all matching indices (used for checking duplicate data and proper sorting)
             self._indices = [col.index for col in matching_worksheet_columns]
             # Get first matching column data (any duplicate columns are ignored; user rcv warning)
             self._body = matching_worksheet_columns[0].body
 
     def validate(self) -> None:
-        """Called by RTMWorksheet object to val-check and report out on field."""
-        val_results = [val.val_column_exist(self.field_found())]
-        if self.field_found():
-            val_results.append(val.val_column_sort(self._correct_position))
-            val_results += self._validate_this_field()
-        print_validation_report(self.field_name, val_results)
 
-    def _validate_this_field(self) -> List[dict]:
+        # --- Was the field found? --------------------------------------------
+        field_found = self.field_found()
+
+        # --- Generate the minimum output message -----------------------------
+        self._val_results = [
+            validator_output.OutputHeader(self.get_field_name()),  # Start with header
+            val.val_column_exist(field_found),
+        ]
+
+        # --- Perform remaining validation if the field was found -------------
+        if field_found:
+            self._val_results.append(val.val_column_sort(self._correct_position))
+            self._val_results += self._validation_specific_to_this_field()
+
+    def _validation_specific_to_this_field(self) -> List[validator_output.ValidatorOutput]:
         return []
+
+    def print(self):
+        for result in self._val_results:
+            result.print()
 
     def field_found(self):
         if self._body is None:
@@ -73,6 +95,15 @@ class SingleColumnField(Field):
     @classmethod
     def get_field_name(cls):
         return cls.field_name
+
+    @staticmethod
+    def _get_worksheet_columns():
+        if _worksheet_columns is None:
+            raise UninitializedError(
+                "A field tried accessing uninitialized worksheet columns"
+            )
+        else:
+            return _worksheet_columns
 
 
 @contextmanager

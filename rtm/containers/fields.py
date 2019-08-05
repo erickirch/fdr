@@ -1,4 +1,5 @@
 # --- Standard Library Imports ------------------------------------------------
+import collections
 from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
@@ -19,11 +20,23 @@ def collect_field(field):
     return field
 
 
+class Fields(collections.abc.Sequence):
+
+    def __init__(self):
+        self._fields = [field_class() for field_class in field_classes]
+
+    def __getitem__(self, item) -> Field:
+        return self._fields[item]
+
+    def __len__(self) -> int:
+        return len(self._fields)
+
+
 @collect_field
 class ID(SingleColumnField):
     field_name = "ID"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         results = [
             val.val_cells_not_empty(self._body),
         ]
@@ -95,7 +108,7 @@ class CascadeSubfield(SingleColumnField):
 class CascadeLevel(SingleColumnField):
     field_name = "Cascade Level"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return val.example_results()
 
 
@@ -103,7 +116,7 @@ class CascadeLevel(SingleColumnField):
 class ReqStatement(SingleColumnField):
     field_name = "Requirement Statement"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return val.example_results()
 
 
@@ -111,7 +124,7 @@ class ReqStatement(SingleColumnField):
 class ReqRationale(SingleColumnField):
     field_name = "Requirement Rationale"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return [val.val_cells_not_empty(self._body)]
 
 
@@ -119,7 +132,7 @@ class ReqRationale(SingleColumnField):
 class VVStrategy(SingleColumnField):
     field_name = "Verification or Validation Strategy"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return val.example_results()
 
 
@@ -127,7 +140,7 @@ class VVStrategy(SingleColumnField):
 class VVResults(SingleColumnField):
     field_name = "Verification or Validation Results"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
 
 
@@ -135,7 +148,7 @@ class VVResults(SingleColumnField):
 class DOFeatures(SingleColumnField):
     field_name = "Design Output Feature (with CTQ ID #)"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
 
 
@@ -143,7 +156,7 @@ class DOFeatures(SingleColumnField):
 class CTQ(SingleColumnField):
     field_name = "CTQ? Yes, No, N/A"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
 
 
@@ -151,7 +164,7 @@ class CTQ(SingleColumnField):
 class Devices(SingleColumnField):
     field_name = "Devices"
 
-    def _validate_this_field(self) -> List[ValidationResult]:
+    def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return [val.val_cells_not_empty(self._body)]
 
 

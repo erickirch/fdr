@@ -102,7 +102,7 @@ class WorkItems(collections.abc.Sequence):
     def __getitem__(self, item) -> WorkItem:
         return self._work_items[item]
 
-    def __len__(self) -> WorkItem:
+    def __len__(self) -> int:
         return len(self._work_items)
 
 
