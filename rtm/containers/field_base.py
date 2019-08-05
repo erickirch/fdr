@@ -1,4 +1,5 @@
 # --- Standard Library Imports ------------------------------------------------
+import abc
 from contextlib import contextmanager
 from typing import List
 
@@ -14,7 +15,13 @@ from rtm.containers.worksheet_columns import get_matching_worksheet_columns
 _worksheet_columns = None
 
 
-class Field:
+class Field(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def validate(self):
+        return
+
+
+class SingleColumnField(Field):
 
     field_name = None
 

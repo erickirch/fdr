@@ -5,7 +5,7 @@
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.worksheet_data_containers.worksheet_columns as wc
+import rtm.containers.worksheet_columns as wc
 from rtm.validation.validation import cell_validation_functions
 
 

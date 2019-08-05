@@ -6,11 +6,12 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.validation.validation as val
-from rtm.worksheet_data_containers.field_base import Field
-from rtm.validation.validator_output import ValidationResult
+from rtm.containers.field_base import Field, SingleColumnField
+from rtm.validation.validator_output import ValidationResult, OutputHeader
 
 
 field_classes = []
+_work_items = None
 
 
 def collect_field(field):
@@ -19,7 +20,7 @@ def collect_field(field):
 
 
 @collect_field
-class ID(Field):
+class ID(SingleColumnField):
     field_name = "ID"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -66,9 +67,21 @@ class CascadeBlock(Field):
             previous_index = subfield.validate_position(previous_index)
         return previous_index
 
+    def validate(self):
+        """
+        if index=0, level must == 0. If not, error
+        """
+        validation_outputs = [
+            OutputHeader(self.get_name()),
+            val.val_cascade_block_only_one_entry(_work_items),
+            val.val_cascade_block_x_or_f(_work_items),
+        ]
+        for output in validation_outputs:
+            output.print()
+
 
 # Not a collected field; rolls up under CascadeBlock
-class CascadeSubfield(Field):
+class CascadeSubfield(SingleColumnField):
     def __init__(self, all_worksheet_columns, subfield_name):
         self.subfield_name = subfield_name
         super().__init__(all_worksheet_columns)
@@ -78,7 +91,7 @@ class CascadeSubfield(Field):
 
 
 @collect_field
-class CascadeLevel(Field):
+class CascadeLevel(SingleColumnField):
     field_name = "Cascade Level"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -86,7 +99,7 @@ class CascadeLevel(Field):
 
 
 @collect_field
-class ReqStatement(Field):
+class ReqStatement(SingleColumnField):
     field_name = "Requirement Statement"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -94,7 +107,7 @@ class ReqStatement(Field):
 
 
 @collect_field
-class ReqRationale(Field):
+class ReqRationale(SingleColumnField):
     field_name = "Requirement Rationale"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -102,7 +115,7 @@ class ReqRationale(Field):
 
 
 @collect_field
-class VVStrategy(Field):
+class VVStrategy(SingleColumnField):
     field_name = "Verification or Validation Strategy"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -110,7 +123,7 @@ class VVStrategy(Field):
 
 
 @collect_field
-class VVResults(Field):
+class VVResults(SingleColumnField):
     field_name = "Verification or Validation Results"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -118,7 +131,7 @@ class VVResults(Field):
 
 
 @collect_field
-class DOFeatures(Field):
+class DOFeatures(SingleColumnField):
     field_name = "Design Output Feature (with CTQ ID #)"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -126,7 +139,7 @@ class DOFeatures(Field):
 
 
 @collect_field
-class CTQ(Field):
+class CTQ(SingleColumnField):
     field_name = "CTQ? Yes, No, N/A"
 
     def _validate_this_field(self) -> List[ValidationResult]:
@@ -134,11 +147,18 @@ class CTQ(Field):
 
 
 @collect_field
-class Devices(Field):
+class Devices(SingleColumnField):
     field_name = "Devices"
 
     def _validate_this_field(self) -> List[ValidationResult]:
         return [val.val_cells_not_empty(self._body)]
+
+
+def set_work_items(work_items):
+    global _work_items
+    _work_items = work_items
+    yield
+    _work_items = None
 
 
 if __name__ == "__main__":

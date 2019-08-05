@@ -5,7 +5,9 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
+from rtm.validation.checks import cell_empty
 from rtm.validation.validator_output import ValidationResult
+from rtm.containers.work_items import WorkItems
 
 
 def val_column_sort(correct_position) -> ValidationResult:
@@ -55,11 +57,36 @@ def val_cells_not_empty(values) -> ValidationResult:
     return ValidationResult(score, title, explanation, indices)
 
 
-def cell_empty(value) -> bool:
-    if not value:
-        return True
-    return False
+def val_cascade_block_only_one_entry(work_items: WorkItems) -> ValidationResult:
+    title = "Single Entry"
+    indices = []
+    for work_item in work_items:
+        _len = len(work_item.cascade_block_contents)
+        if _len != 1:
+            indices.append(work_item.index)
+    if not indices:
+        score = 'Pass'
+        explanation = 'All rows have a single entry'
+    else:
+        score = 'Error'
+        explanation = 'Action Required. The following rows are blank or have multiple entries:'
+    return ValidationResult(score, title, explanation, indices)
 
+
+def val_cascade_block_x_or_f(work_items: WorkItems) -> ValidationResult:
+    title = "X or F"
+    indices = []
+    acceptable_entries = ['X', 'F']
+    for work_item in work_items:
+        if work_item.cascade_block_contents[0] not in acceptable_entries:
+            indices.append(work_item.index)
+    if not indices:
+        score = 'Pass'
+        explanation = f'All entries are one of {acceptable_entries}'
+    else:
+        score = 'Error'
+        explanation = f'Action Required. The following rows contain something other than the allowed {acceptable_entries}:'
+    return ValidationResult(score, title, explanation, indices)
 
 
 def get_row(index):

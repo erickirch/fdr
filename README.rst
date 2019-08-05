@@ -70,12 +70,12 @@ Cascade Block
     - Solution Level 3
     - ...
     - Solution Level n
-- one and only one cell gets marked (WorkItemObject)
-- no missing steps (CascadeObject)
-- each requirements path starts with Procedure Step (CascadeObject)
-- each requirements path terminates in 'F' (CascadeObject)
-- all DO Solution levels get used (CascadeObject) *
-- only contains characters X or F
+- one and only one cell gets marked
+- no missing steps
+- each requirements path starts with Procedure Step
+- each requirements path terminates in 'F' (done)
+- all DO Solution levels get used
+- only contains characters X or F (done)
 
 Cascade Level
 '''''''''''''
