@@ -5,7 +5,7 @@ from typing import List
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.fields.field import Field
+from rtm.fields.field_base import Field
 from rtm.fields.fields import field_classes as fc
 from rtm.worksheet_columns import get_worksheet_columns
 

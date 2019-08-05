@@ -6,8 +6,8 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.fields.validation as val
-from rtm.fields.field import Field
-from rtm.fields.validation_results import ValidationResult
+from rtm.fields.field_base import Field
+from rtm.fields.validator_output import ValidationResult
 
 
 field_classes = []

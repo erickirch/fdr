@@ -18,7 +18,7 @@ def validate(path_option='default'):
         "\nPlease select an RTM excel file you wish to validate."
     )
 
-    time.sleep(2)
+    time.sleep(1)
     try:
         path = get_rtm_path(path_option)
         worksheet = RTMWorksheet(path)

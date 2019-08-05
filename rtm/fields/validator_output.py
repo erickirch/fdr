@@ -1,4 +1,5 @@
 # --- Standard Library Imports ------------------------------------------------
+import abc
 from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
@@ -8,7 +9,13 @@ import click
 # None
 
 
-class ValidationResult:
+class ValidatorOutput(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def print(self):
+        return
+
+
+class ValidationResult(ValidatorOutput):
     def __init__(self, score, title, explanation=None, nonconforming_indices=None):
         self._scores_and_colors = {'Pass': 'green', 'Warning': 'yellow', 'Error': 'red'}
         self._set_score(score)
@@ -48,18 +55,18 @@ class ValidationResult:
         click.echo()  # new line
 
 
-def print_validation_report(field_name, field_validation_results: List[ValidationResult]) -> None:
-    print_val_header(field_name)
-    for result in field_validation_results:
-        result.print()
+class OutputHeader(ValidatorOutput):
 
+    def __init__(self, header_name):
+        self.field_name = header_name
 
-def print_val_header(field_name) -> None:
-    sym = '+'
-    box_middle = f"{sym}  {field_name}  {sym}"
-    box_horizontal = sym * len(box_middle)
-    click.echo()
-    click.secho(box_horizontal, bold=True)
-    click.secho(box_middle, bold=True)
-    click.secho(box_horizontal, bold=True)
-    click.echo()
+    @abc.abstractmethod
+    def print(self) -> None:
+        sym = '+'
+        box_middle = f"{sym}  {self.field_name}  {sym}"
+        box_horizontal = sym * len(box_middle)
+        click.echo()
+        click.secho(box_horizontal, bold=True)
+        click.secho(box_middle, bold=True)
+        click.secho(box_horizontal, bold=True)
+        click.echo()

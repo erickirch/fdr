@@ -8,7 +8,7 @@ import pytest
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.worksheet_columns as wc
 from rtm.fields.validation import example_results
-from rtm.fields.validation_results import ValidationResult
+from rtm.fields.validator_output import ValidationResult
 
 
 @pytest.fixture(scope="session")

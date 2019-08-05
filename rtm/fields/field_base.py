@@ -7,7 +7,7 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.fields.validation as val
-from rtm.fields.validation_results import print_validation_report
+from rtm.fields.validator_output import print_validation_report
 from rtm.worksheet_columns import get_matching_worksheet_columns
 
 
