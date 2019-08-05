@@ -75,6 +75,7 @@ class CascadeBlock(Field):
             OutputHeader(self.get_name()),
             val.val_cascade_block_only_one_entry(_work_items),
             val.val_cascade_block_x_or_f(_work_items),
+            val.val_cascade_block_use_all_columns(_work_items, len(self._subfields))
         ]
         for output in validation_outputs:
             output.print()

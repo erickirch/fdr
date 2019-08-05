@@ -25,7 +25,7 @@ class SingleColumnField(Field):
 
     field_name = None
 
-    def __init__(self, _worksheet_columns):
+    def __init__(self):
         matching_worksheet_columns = get_matching_worksheet_columns(_worksheet_columns, self.get_field_name())
 
         # --- Set Defaults ----------------------------------------------------

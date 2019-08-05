@@ -89,6 +89,22 @@ def val_cascade_block_x_or_f(work_items: WorkItems) -> ValidationResult:
     return ValidationResult(score, title, explanation, indices)
 
 
+def val_cascade_block_use_all_columns(work_items: WorkItems, subfield_count: int) -> ValidationResult:
+    title = "Use All Columns"
+    indices = []
+    max_position = max(work_item.position for work_item in work_items)
+    if max_position + 1 == subfield_count:
+        score = 'Pass'
+        explanation = f'All cascade levels were used.'
+    elif max_position >= subfield_count:
+        raise IndexError("Cascade level mismatch")
+    else:
+        score = 'Warning'
+        unused_levels = subfield_count-max_position-1
+        explanation = f'The last {unused_levels} cascade levels are unused.'
+    return ValidationResult(score, title, explanation)
+
+
 def get_row(index):
     return index + 2
 

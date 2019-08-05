@@ -74,7 +74,7 @@ Cascade Block
 - no missing steps
 - each requirements path starts with Procedure Step
 - each requirements path terminates in 'F' (done)
-- all DO Solution levels get used
+- all DO Solution levels get used (done)
 - only contains characters X or F (done)
 
 Cascade Level
