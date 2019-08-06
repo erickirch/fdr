@@ -318,7 +318,7 @@ def is_windchill_number_present(value):
     # slice string again into two parts. first 10 characters (possible WC number) and remaining characters
     wc_number = value[:9]
     remaining_char = value[10:]
-    # test if wc_number is all digits and remaining is all letters
+    # test if wc_number is all set_and_get_funcs and remaining is all letters
     if wc_number.isdigit() and (remaining_char.isalpha() or len(remaining_char) == 0) is True:
         return True
     else:
@@ -337,8 +337,8 @@ def has_ctq_id(value):
 
 
 # Design Output Features
-# check for CTQ number after CTQ tag. returns true if all occurrences of CTQ are followed by two digits
-# returns false if no CTQs are present OR they are not followed by two digits. (this should be used in conjunction
+# check for CTQ number after CTQ tag. returns true if all occurrences of CTQ are followed by two set_and_get_funcs
+# returns false if no CTQs are present OR they are not followed by two set_and_get_funcs. (this should be used in conjunction
 # with the previous function that looks for CTQ in the cell to eliminate possibility of the former case)
 # FDR rules: CTQ (critical to quality) features should be called out in the Design Output features column.
 # CTQs should be called out using the following format: (CTQ08)
@@ -347,7 +347,7 @@ def has_ctq_numbers(value):
     number_count = 0
     # find _get_index of first CTQ ID
     ctq_index = value.lower().find("ctq")
-    # while loop will keep searching for CTQ IDs until there are none. the string is sliced, checked for digits,
+    # while loop will keep searching for CTQ IDs until there are none. the string is sliced, checked for set_and_get_funcs,
     # searched for a new ID, _get_index found for new CTQ ID, repeat.
     while ctq_index != -1:
         # add 1 to ctq_counter, if there were no CTQs, the while condition would not be met.
