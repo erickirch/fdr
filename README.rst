@@ -36,12 +36,12 @@ J&J Quick Start
     #. Hit the ``Windows Key`` and type ``cmd`` to search for the Windows command prompt
     #. Right-click ``cmd`` and select ``open file location``. This opens File Explorer.
     #. Right-click on the ``cmd`` icon and select ``Run with elevated privileges``.
-#. **Install** ``fdr``
-    a. In Command Prompt, type ``pip install fdr``
-    #. If this throws an error, try instead: ``python -m pip install fdr``. Hint: the up-arrow accesses previous commands to reduce the amount of typing you need to do.
+#. **Install** ``dps-rtm``
+    a. In Command Prompt, type ``pip install dps-rtm``
+    #. If this throws an error, try instead: ``python -m pip install dps-rtm``. Hint: the up-arrow accesses previous commands to reduce the amount of typing you need to do.
     #. Note: You might see a note about ``pip`` being out of date. This is ok, but feel free to update it as suggested.
-#. **Run** ``fdr``
-    a. In Command Prompt, type ``fdr``
+#. **Run** ``rtm``
+    a. In Command Prompt, type ``rtm``
 
 Validation Rules
 -----------------
