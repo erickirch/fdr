@@ -11,6 +11,7 @@ import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
 from rtm.main.exceptions import UninitializedError
 from rtm.validate import validator_output
+import tests.conftest as conftest
 
 
 class Field(metaclass=abc.ABCMeta):
@@ -32,6 +33,28 @@ class Field(metaclass=abc.ABCMeta):
         return
 
 
+def add_previous_field_finder(field_class):
+
+    def get_previous_field(self):
+        fields = cm.fields()
+        index_prev_field = None
+        for index, field in enumerate(fields):
+            if self is field:
+                index_prev_field = field - 1
+                break
+        if index_prev_field is None:
+            raise ValueError
+        elif index_prev_field == -1:
+            return None
+        else:
+            return fields[index_prev_field]
+
+    setattr(field_class, get_previous_field.__name__, get_previous_field)
+
+    return field_class
+
+
+@add_previous_field_finder
 class SingleColumnField(Field):
 
     field_name = None
@@ -74,7 +97,7 @@ class SingleColumnField(Field):
             self._val_results += self._validation_specific_to_this_field()
 
     def _validation_specific_to_this_field(self) -> List[validator_output.ValidatorOutput]:
-        return []
+        return conftest.example_val_results()
 
     def print(self):
         for result in self._val_results:

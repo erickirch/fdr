@@ -6,17 +6,8 @@
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.worksheet_columns as wc
-from rtm.containers.field_base import Field
-from rtm.containers.fields import fields as fs
+from rtm.containers.field_templates import Field
 from rtm.main.rtm_worksheet import RTMWorksheet
-
-
-def test_initialize_fields(worksheet_columns):
-    fields = RTMWorksheet._initialize_fields(
-        field_classes=fs, worksheet_columns=worksheet_columns
-    )
-    for field in fields:
-        assert field.field_found
 
 
 def test_get_worksheet(rtm_path):

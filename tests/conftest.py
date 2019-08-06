@@ -54,20 +54,6 @@ def rtm_path() -> Path:
 
 @pytest.fixture(scope="session")
 def example_val_results() -> List[ValidationResult]:
-    return example_results()
-
-
-@pytest.fixture(scope="session")
-def ws_cols_from_test_validation(rtm_path):
-    return wc.read_worksheet_columns(rtm_path, worksheet_name='test_validation')
-
-# @pytest.fixture(scope="session")
-# def
-
-
-
-
-def example_results() -> List[ValidationResult]:
     explanation = 'This is an example explanation'
     examples = [
         ValidationResult('Pass', 'Pass Example', explanation),
@@ -75,3 +61,8 @@ def example_results() -> List[ValidationResult]:
         ValidationResult('Error', 'Error Example', explanation),
     ]
     return examples
+
+
+@pytest.fixture(scope="session")
+def ws_cols_from_test_validation(rtm_path):
+    return wc.read_worksheet_columns(rtm_path, worksheet_name='test_validation')
