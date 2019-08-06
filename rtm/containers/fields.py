@@ -12,22 +12,39 @@ from rtm.containers.field_base import Field, SingleColumnField
 from rtm.validate.validator_output import ValidationResult, OutputHeader
 
 
-field_classes = []
-
-
-def collect_field(collect=True):
-    def decorator(field):
-        if collect:
-            # This is so I can easily switch off the collection of a field
-            field_classes.append(field)
-        return field
-    return decorator
-
-
 class Fields(collections.abc.Sequence):
 
+    # --- Class handling ------------------------------------------------------
+
+    _field_classes = []
+
+    @classmethod
+    def _get_field_classes(cls):
+        return cls._field_classes
+
+    @classmethod
+    def append_field(cls, field_class: Field):
+        # if not issubclass(field_class, Field):
+        #     raise TypeError
+        cls._field_classes.append(field_class)
+
+    @classmethod
+    def collect_field(cls, collect=True):
+        def decorator(field):
+            if collect: # This is so I can easily switch off the collection of a field
+                cls.append_field(field)
+            return field
+        return decorator
+
+    # --- Object handling -----------------------------------------------------
+
     def __init__(self):
-        self._fields = [field_class() for field_class in field_classes]
+        self._fields = None
+
+    def initialize(self):
+        self._fields = [field_class() for field_class in self._get_field_classes()]
+
+    # --- Sequence ------------------------------------------------------------
 
     def __getitem__(self, item) -> Field:
         return self._fields[item]
@@ -36,7 +53,10 @@ class Fields(collections.abc.Sequence):
         return len(self._fields)
 
 
-@collect_field(False)
+fields = Fields()
+
+
+@fields.collect_field()
 class ID(SingleColumnField):
     field_name = "ID"
 
@@ -48,7 +68,7 @@ class ID(SingleColumnField):
         return results
 
 
-@collect_field(False)
+@fields.collect_field()
 class CascadeBlock(Field):
     def __init__(self, all_worksheet_columns):
 
@@ -108,7 +128,7 @@ class CascadeSubfield(SingleColumnField):
         return self.subfield_name
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class CascadeLevel(SingleColumnField):
     field_name = "Cascade Level"
 
@@ -116,7 +136,7 @@ class CascadeLevel(SingleColumnField):
         return val.example_results()
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class ReqStatement(SingleColumnField):
     field_name = "Requirement Statement"
 
@@ -124,7 +144,7 @@ class ReqStatement(SingleColumnField):
         return val.example_results()
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class ReqRationale(SingleColumnField):
     field_name = "Requirement Rationale"
 
@@ -132,7 +152,7 @@ class ReqRationale(SingleColumnField):
         return [val.val_cells_not_empty(self._body)]
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class VVStrategy(SingleColumnField):
     field_name = "Verification or Validation Strategy"
 
@@ -140,7 +160,7 @@ class VVStrategy(SingleColumnField):
         return val.example_results()
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class VVResults(SingleColumnField):
     field_name = "Verification or Validation Results"
 
@@ -148,7 +168,7 @@ class VVResults(SingleColumnField):
         return []
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class DOFeatures(SingleColumnField):
     field_name = "Design Output Feature (with CTQ ID #)"
 
@@ -156,7 +176,7 @@ class DOFeatures(SingleColumnField):
         return []
 
 
-@collect_field(False)
+@fields.collect_field(False)
 class CTQ(SingleColumnField):
     field_name = "CTQ? Yes, No, N/A"
 
@@ -164,7 +184,7 @@ class CTQ(SingleColumnField):
         return []
 
 
-@collect_field(True)
+@fields.collect_field()
 class Devices(SingleColumnField):
     field_name = "Devices"
 
@@ -172,12 +192,6 @@ class Devices(SingleColumnField):
         return [val.val_cells_not_empty(self._body)]
 
 
-def set_work_items(work_items):
-    global _work_items
-    _work_items = work_items
-    yield
-    _work_items = None
-
-
 if __name__ == "__main__":
-    pass
+    for field in fields._field_classes:
+        print(field)

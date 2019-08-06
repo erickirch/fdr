@@ -95,15 +95,6 @@ class SingleColumnField(Field):
             raise UninitializedError("A field hasn't implemented a field name yet.")
         return cls.field_name
 
-    @staticmethod
-    def _get_worksheet_columns():
-        if _worksheet_columns is None:
-            raise UninitializedError(
-                "A field tried accessing uninitialized worksheet columns"
-            )
-        else:
-            return _worksheet_columns
-
 
 if __name__ == "__main__":
     pass

@@ -6,11 +6,34 @@ import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.worksheet_columns as wc
-from rtm.validate.validation import cell_validation_functions
+import rtm.validate.validation as val
 
 
-@pytest.mark.parametrize('val_func', cell_validation_functions)
-def test_val_cell_functions(ws_cols_from_test_validation, val_func):
+def test_column_exist(capsys):
+    io = [
+        (True, f'\tPass\tFIELD EXIST\n'),
+        (False, f'\tError\tFIELD EXIST - Field not found\n')
+    ]
+    for item in io:
+        result = val.val_column_exist(item[0])
+        result.print()
+        captured = capsys.readouterr()
+        assert captured.out == item[1]
+
+
+def test_column_sort(capsys):
+    result = val.val_column_sort(True, 'Butter Panzer')
+    result.print()
+    captured = capsys.readouterr()
+    assert captured.out == f'\tPass\tFIELD ORDER - This field comes after the Butter Panzer field as it should\n'
+
+
+def test_cells_not_empty():
+    pass
+
+
+@pytest.mark.parametrize('val_func', val.cell_validation_functions)
+def test_cell_functions(ws_cols_from_test_validation, val_func):
     # ws_cols = ws_cols_from_test_validation
     # header = val_cells_not_empty.__name__
     # try:
@@ -36,5 +59,4 @@ def test_val_cell_functions(ws_cols_from_test_validation, val_func):
 
 
 if __name__ == "__main__":
-    print(cell_validation_functions)
-
+    pass

@@ -13,17 +13,7 @@ from typing import List
 from rtm.validate.checks import cell_empty
 from rtm.validate.validator_output import ValidationResult
 from rtm.containers.work_items import WorkItems
-
-
-def val_column_sort(correct_position) -> ValidationResult:
-    title = "Field Order"
-    if correct_position:
-        score = 'Pass'
-        explanation = None
-    else:
-        score = 'Error'
-        explanation = 'Action Required: Move this column to its correct position'
-    return ValidationResult(score, title, explanation)
+from rtm.main.exceptions import Uninitialized
 
 
 def val_column_exist(field_found) -> ValidationResult:
@@ -37,14 +27,28 @@ def val_column_exist(field_found) -> ValidationResult:
     return ValidationResult(score, title, explanation)
 
 
-def example_results() -> List[ValidationResult]:
-    explanation = 'This is an example explanation'
-    examples = [
-        ValidationResult('Pass', 'Pass Example', explanation),
-        ValidationResult('Warning', 'Warning Example', explanation),
-        ValidationResult('Error', 'Error Example', explanation),
-    ]
-    return examples
+def val_column_sort(correct_position: bool, previous_field_name: str) -> ValidationResult:
+    """
+    Report on horizontal sorting of a single field.
+    :param correct_position: boolean stating whether this field came after its predecessor
+    :param previous_field_name: name of field expected to come before this one. None if this is the first field.
+    :return: ValidationResult
+    """
+    title = "Field Order"
+    if correct_position and previous_field_name is None:
+        # This field appears before all the others
+        score = 'Pass'
+        explanation = 'This field appears to the left of all the others'
+    elif not correct_position and previous_field_name is None:
+        # This field should be the first and should always pass, but something is wrong with the code
+        raise IndexError
+    elif correct_position:
+        score = 'Pass'
+        explanation = f'This field comes after the {previous_field_name} field as it should'
+    else:
+        score = 'Error'
+        explanation = f'This field should come after {previous_field_name}'
+    return ValidationResult(score, title, explanation)
 
 
 def val_cells_not_empty(values) -> ValidationResult:

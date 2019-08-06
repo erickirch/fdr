@@ -7,7 +7,6 @@ import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.worksheet_columns as wc
-from rtm.validate.validation import example_results
 from rtm.validate.validator_output import ValidationResult
 
 
@@ -58,3 +57,15 @@ def ws_cols_from_test_validation(rtm_path):
 
 # @pytest.fixture(scope="session")
 # def
+
+
+
+
+def example_results() -> List[ValidationResult]:
+    explanation = 'This is an example explanation'
+    examples = [
+        ValidationResult('Pass', 'Pass Example', explanation),
+        ValidationResult('Warning', 'Warning Example', explanation),
+        ValidationResult('Error', 'Error Example', explanation),
+    ]
+    return examples
