@@ -3,7 +3,7 @@ import collections
 from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
-# None
+import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.main.context_managers as cm
@@ -19,7 +19,7 @@ class Fields(collections.abc.Sequence):
     _field_classes = []
 
     @classmethod
-    def _get_field_classes(cls):
+    def get_field_classes(cls):
         return cls._field_classes
 
     @classmethod
@@ -30,19 +30,25 @@ class Fields(collections.abc.Sequence):
 
     @classmethod
     def collect_field(cls, collect=True):
-        def decorator(field):
-            if collect: # This is so I can easily switch off the collection of a field
-                cls.append_field(field)
-            return field
+        def decorator(field_):
+            if collect:  # This is so I can easily switch off the collection of a field
+                cls.append_field(field_)
+            return field_
         return decorator
 
     # --- Object handling -----------------------------------------------------
 
     def __init__(self):
-        self._fields = None
+        self._fields = []
 
     def initialize(self):
-        self._fields = [field_class() for field_class in self._get_field_classes()]
+        self._fields = [field_class() for field_class in self.get_field_classes()]
+
+    def get_matching_field(self, field_class) -> Field:
+        for _field in self:
+            if issubclass(_field, field_class):
+                return _field
+        raise ValueError(f'{field_class} not found in {self}')
 
     # --- Sequence ------------------------------------------------------------
 
@@ -53,10 +59,7 @@ class Fields(collections.abc.Sequence):
         return len(self._fields)
 
 
-fields = Fields()
-
-
-@fields.collect_field()
+@Fields.collect_field()
 class ID(SingleColumnField):
     field_name = "ID"
 
@@ -68,14 +71,14 @@ class ID(SingleColumnField):
         return results
 
 
-@fields.collect_field()
+@Fields.collect_field()
 class CascadeBlock(Field):
-    def __init__(self, all_worksheet_columns):
+    def __init__(self):
 
         # --- Get Matching Subfields; Stop after first Non-Found --------------
         self._subfields = []
         for subfield_name in self._get_subfield_names():
-            subfield = CascadeSubfield(all_worksheet_columns, subfield_name)
+            subfield = CascadeSubfield(subfield_name)
             if subfield.field_found():
                 self._subfields.append(subfield)
             else:
@@ -108,27 +111,40 @@ class CascadeBlock(Field):
         """
         if index=0, level must == 0. If not, error
         """
+        work_items = cm.work_items()
         validation_outputs = [
             OutputHeader(self.get_name()),
-            val.val_cascade_block_only_one_entry(_work_items),
-            val.val_cascade_block_x_or_f(_work_items),
-            val.val_cascade_block_use_all_columns(_work_items, len(self._subfields))
+            val.val_cascade_block_only_one_entry(work_items),
+            val.val_cascade_block_x_or_f(work_items),
+            val.val_cascade_block_use_all_columns(work_items, len(self._subfields))
         ]
         for output in validation_outputs:
             output.print()
 
+    def print(self):
+        click.echo("The Cascade Block isn't printing anything useful yet.")
+
+    def field_found(self):
+        if len(self._subfields) > 0:
+            return True
+        else:
+            return False
+
+    def get_body(self):
+        return [subfield.get_body() for subfield in self._subfields]
+
 
 # Not a collected field; rolls up under CascadeBlock
 class CascadeSubfield(SingleColumnField):
-    def __init__(self, all_worksheet_columns, subfield_name):
-        self.subfield_name = subfield_name
-        super().__init__(all_worksheet_columns)
+    def __init__(self, subfield_name):
+        self._subfield_name = subfield_name
+        super().__init__()
 
     def get_field_name(self):
-        return self.subfield_name
+        return self._subfield_name
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class CascadeLevel(SingleColumnField):
     field_name = "Cascade Level"
 
@@ -136,7 +152,7 @@ class CascadeLevel(SingleColumnField):
         return val.example_results()
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class ReqStatement(SingleColumnField):
     field_name = "Requirement Statement"
 
@@ -144,7 +160,7 @@ class ReqStatement(SingleColumnField):
         return val.example_results()
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class ReqRationale(SingleColumnField):
     field_name = "Requirement Rationale"
 
@@ -152,7 +168,7 @@ class ReqRationale(SingleColumnField):
         return [val.val_cells_not_empty(self._body)]
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class VVStrategy(SingleColumnField):
     field_name = "Verification or Validation Strategy"
 
@@ -160,7 +176,7 @@ class VVStrategy(SingleColumnField):
         return val.example_results()
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class VVResults(SingleColumnField):
     field_name = "Verification or Validation Results"
 
@@ -168,7 +184,7 @@ class VVResults(SingleColumnField):
         return []
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class DOFeatures(SingleColumnField):
     field_name = "Design Output Feature (with CTQ ID #)"
 
@@ -176,7 +192,7 @@ class DOFeatures(SingleColumnField):
         return []
 
 
-@fields.collect_field(False)
+@Fields.collect_field()
 class CTQ(SingleColumnField):
     field_name = "CTQ? Yes, No, N/A"
 
@@ -184,7 +200,7 @@ class CTQ(SingleColumnField):
         return []
 
 
-@fields.collect_field()
+@Fields.collect_field()
 class Devices(SingleColumnField):
     field_name = "Devices"
 

@@ -1,12 +1,13 @@
 # --- Standard Library Imports ------------------------------------------------
 import collections
-from contextlib import contextmanager
 from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
+import rtm.containers.fields as fs
+import rtm.main.context_managers as cm
 from rtm.main.exceptions import UninitializedError
 from rtm.validate.checks import cell_empty
 
@@ -84,8 +85,10 @@ class WorkItem:
 
 class WorkItems(collections.abc.Sequence):
 
-    def __init__(self, cascade_block_body: List[list]):
-        self._initialize_work_items(cascade_block_body)
+    def __init__(self):
+        fields = cm.fields()
+        cascade_block = fields.get_matching_field(fs.CascadeBlock)
+        self._initialize_work_items(cascade_block.get_body())
         for work_item in self._work_items:
             work_item.find_parent(self._work_items)
 

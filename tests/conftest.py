@@ -14,14 +14,20 @@ from rtm.validate.validator_output import ValidationResult
 def dummy_worksheet_columns() -> List[wc.WorksheetColumn]:
     headers = [
         "ID",
-        "Devices",
+        "Procedure Step",
+        "User Need",
+        "Design Input",
+        "DO Solution L1",
+        "DO Solution L2",
+        "DO Solution L3",
+        "Cascade Level",
         "Requirement Statement",
         "Requirement Rationale",
-        "Cascade Level",
         "Verification or Validation Strategy",
         "Verification or Validation Results",
         "Design Output Feature (with CTQ ID #)",
         "CTQ? Yes, No, N/A",
+        "Devices",
     ]
     ws_cols = []
     for index, header in enumerate(headers):

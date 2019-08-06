@@ -22,6 +22,15 @@ class Field(metaclass=abc.ABCMeta):
     def print(self):
         return
 
+    @abc.abstractmethod
+    def get_body(self):
+        """Return all values from this field (exclude the header)"""
+        return
+
+    @abc.abstractmethod
+    def field_found(self):
+        return
+
 
 class SingleColumnField(Field):
 
@@ -88,6 +97,9 @@ class SingleColumnField(Field):
         else:
             self._correct_position = False
         return self._get_index()
+
+    def get_body(self):
+        return self._body
 
     @classmethod
     def get_field_name(cls):

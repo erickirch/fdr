@@ -5,20 +5,25 @@
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
+import rtm.main.context_managers as cm
+import rtm.containers.field_base as fb
 from rtm.main.exceptions import RTMValidatorError
-from rtm.containers.fields import field_classes
+from rtm.containers.fields import fields
 
 
-@pytest.mark.parametrize("field_class", field_classes)
+@pytest.mark.parametrize("field_class", fields.get_field_classes())
 @pytest.mark.parametrize("dups_count", [1, 2])
-def test_init_with_good_data(worksheet_columns, field_class, dups_count):
+def test_init_with_good_data(dummy_worksheet_columns, field_class, dups_count):
     """Field should successfully initialize with two matching column"""
-    field = field_class(worksheet_columns * dups_count)
-    assert field.field_found()
-    assert len(field._indices) == dups_count
+    worksheet_columns = dummy_worksheet_columns * dups_count
+    with cm.worksheet_columns.set(worksheet_columns):
+        field = field_class()
+        assert field.field_found()
+        if issubclass(field_class, fb.SingleColumnField):
+            assert len(field._indices) == dups_count
 
 
-@pytest.mark.parametrize("field_class", field_classes)
+@pytest.mark.parametrize("field_class", fields)
 def test_init_without_matching_col(worksheet_columns, field_class):
     """Field should initialize to 'not found'"""
     name = field_class.get_field_name()
@@ -29,7 +34,7 @@ def test_init_without_matching_col(worksheet_columns, field_class):
     assert len(worksheet_columns) - len(ws_cols) == 1
 
 
-@pytest.mark.parametrize("field_class", field_classes)
+@pytest.mark.parametrize("field_class", fields)
 @pytest.mark.parametrize("not_worksheet_column", ['c', 1, ('a', 'b')])
 def test_init_with_incorrect_data(not_worksheet_column, field_class):
     """Field and its subclasses should throw a builtin exception if

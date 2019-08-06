@@ -1,7 +1,7 @@
 """
 this script initializes a list of "approved" column headers. It also defines a function that compares the approved list
 to an input list (future state will be from User's file) and returns a named tuple with found, not found and extra
-fc.
+fs.
 
 """
 

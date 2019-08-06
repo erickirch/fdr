@@ -6,7 +6,7 @@
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.main.context_managers as cm
-from rtm.containers import fields as f
+import rtm.containers.fields as fields
 from rtm.containers import worksheet_columns as wc
 from rtm.containers import work_items as wi
 
@@ -18,9 +18,9 @@ class RTMWorksheet:
         worksheet_columns = wc.read_worksheet_columns(path, "Procedure Based Requirements")
         # --- Initialize field objects (i.e. columns) -------------------------
         with cm.worksheet_columns.set(worksheet_columns):
-            self.fields = [Field() for Field in f.field_classes]
+            self.fields = fields.Fields()
         # --- Initialize work items (i.e. rows) -------------------------------
-        with cm.fields(self.fields):
+        with cm.fields.set(self.fields):
             self.work_items = wi.WorkItems()
 
     def validate(self):

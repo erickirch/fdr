@@ -6,6 +6,7 @@ from contextlib import contextmanager
 
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.main.exceptions import UninitializedError
+import rtm.containers.fields
 
 
 class ContextManager:
@@ -29,5 +30,5 @@ class ContextManager:
 
 
 worksheet_columns = ContextManager('worksheet_columns')
-fields = ContextManager('fields')
+fields: rtm.containers.fields.fields = ContextManager('fields')
 work_items = ContextManager('work_items')
