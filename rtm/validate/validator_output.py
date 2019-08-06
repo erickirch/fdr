@@ -1,3 +1,8 @@
+"""
+Instances of these classes contain a single row of validation information,
+ready to be printed to the terminal at the conclusion of the app.
+"""
+
 # --- Standard Library Imports ------------------------------------------------
 import abc
 from typing import List

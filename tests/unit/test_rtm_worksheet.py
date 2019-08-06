@@ -20,7 +20,7 @@ def test_initialize_fields(worksheet_columns):
 
 
 def test_get_worksheet(rtm_path):
-    worksheet_columns = wc.get_worksheet_columns(
+    worksheet_columns = wc.read_worksheet_columns(
         path=rtm_path, worksheet_name="test_worksheet"
     )
     for ws_col in worksheet_columns:

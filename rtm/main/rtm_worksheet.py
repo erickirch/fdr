@@ -15,7 +15,7 @@ class RTMWorksheet:
 
     def __init__(self, path):
         # --- Get raw data ----------------------------------------------------
-        worksheet_columns = wc.get_worksheet_columns(path, "Procedure Based Requirements")
+        worksheet_columns = wc.read_worksheet_columns(path, "Procedure Based Requirements")
         # --- Initialize field objects (i.e. columns) -------------------------
         with cm.worksheet_columns.set(worksheet_columns):
             self.fields = [Field() for Field in f.field_classes]

@@ -6,7 +6,7 @@ import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.worksheet_columns as wc
-from rtm.validation.validation import cell_validation_functions
+from rtm.validate.validation import cell_validation_functions
 
 
 @pytest.mark.parametrize('val_func', cell_validation_functions)

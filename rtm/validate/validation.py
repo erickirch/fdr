@@ -1,3 +1,8 @@
+"""
+These functions each check a specific aspect of an RTM field and return a ValidationResult object,
+ready to be printed on the terminal as the final output of this app.
+"""
+
 # --- Standard Library Imports ------------------------------------------------
 from typing import List
 

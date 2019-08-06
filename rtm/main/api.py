@@ -18,7 +18,7 @@ def validate(path_option='default'):
     click.clear()
     click.echo(
         "\nWelcome to the DePuy Synthes Requirements Trace Matrix (RTM) Validator."
-        "\nPlease select an RTM excel file you wish to validate."
+        "\nPlease select an RTM excel file you wish to test_validate."
     )
 
     time.sleep(1)

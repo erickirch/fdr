@@ -12,7 +12,7 @@ from rtm.main.exceptions import RTMValidatorFileError
 WorksheetColumn = namedtuple("WorksheetColumn", "header body index column")
 
 
-def get_worksheet_columns(path, worksheet_name):
+def read_worksheet_columns(path, worksheet_name):
     """Return list of WorksheetColumn objects"""
 
     # --- Get Workbook ----------------------------------------------------

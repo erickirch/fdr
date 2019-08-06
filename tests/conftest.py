@@ -12,7 +12,7 @@ from rtm.validate.validator_output import ValidationResult
 
 
 @pytest.fixture(scope="session")
-def worksheet_columns() -> List[wc.WorksheetColumn]:
+def dummy_worksheet_columns() -> List[wc.WorksheetColumn]:
     headers = [
         "ID",
         "Devices",
@@ -38,6 +38,11 @@ def worksheet_columns() -> List[wc.WorksheetColumn]:
 
 
 @pytest.fixture(scope="session")
+def ws_cols_from_test_xlsx(rtm_path) -> List[wc.WorksheetColumn]:
+    return wc.read_worksheet_columns(rtm_path, "Procedure Based Requirements")
+
+
+@pytest.fixture(scope="session")
 def rtm_path() -> Path:
     return Path(__file__).parent / "test_rtm.xlsx"
 
@@ -49,7 +54,7 @@ def example_val_results() -> List[ValidationResult]:
 
 @pytest.fixture(scope="session")
 def ws_cols_from_test_validation(rtm_path):
-    return wc.get_worksheet_columns(rtm_path, worksheet_name='test_validation')
+    return wc.read_worksheet_columns(rtm_path, worksheet_name='test_validation')
 
 # @pytest.fixture(scope="session")
 # def

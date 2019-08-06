@@ -5,7 +5,7 @@
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.validation.validator_output as vr
+import rtm.validate.validator_output as vr
 
 
 @pytest.mark.skip()
