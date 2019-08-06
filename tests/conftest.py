@@ -7,8 +7,8 @@ import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.worksheet_columns as wc
-from rtm.validation.validation import example_results
-from rtm.validation.validator_output import ValidationResult
+from rtm.validate.validation import example_results
+from rtm.validate.validator_output import ValidationResult
 
 
 @pytest.fixture(scope="session")

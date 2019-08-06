@@ -5,8 +5,8 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.validation.checks import cell_empty
-from rtm.validation.validator_output import ValidationResult
+from rtm.validate.checks import cell_empty
+from rtm.validate.validator_output import ValidationResult
 from rtm.containers.work_items import WorkItems
 
 

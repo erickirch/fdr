@@ -8,10 +8,7 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.main.exceptions import UninitializedError
-from rtm.validation.checks import cell_empty
-
-
-_fields = None
+from rtm.validate.checks import cell_empty
 
 
 class WorkItem:
@@ -124,23 +121,5 @@ def get_row(columns: List[list], index_: int) -> list:
     return [col[index_] for col in columns]
 
 
-@contextmanager
-def set_fields(fields):
-    global _fields
-    _fields = fields
-    yield
-    _fields = None
-
-
 if __name__ == "__main__":
-
-    lst = list("black")
-    for index, value in enumerate(reversed(lst)):
-        print(index, value)
-    print("hello")
-    print("rev:", reversed(lst))
-
-    rng = reversed(range(5))
-    for index in rng:
-        print(index)
-    print(type(rng))
+    pass

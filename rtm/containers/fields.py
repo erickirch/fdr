@@ -6,18 +6,22 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.validation.validation as val
+import rtm.main.context_managers as cm
+import rtm.validate.validation as val
 from rtm.containers.field_base import Field, SingleColumnField
-from rtm.validation.validator_output import ValidationResult, OutputHeader
+from rtm.validate.validator_output import ValidationResult, OutputHeader
 
 
 field_classes = []
-_work_items = None
 
 
-def collect_field(field):
-    field_classes.append(field)
-    return field
+def collect_field(collect=True):
+    def decorator(field):
+        if collect:
+            # This is so I can easily switch off the collection of a field
+            field_classes.append(field)
+        return field
+    return decorator
 
 
 class Fields(collections.abc.Sequence):
@@ -32,7 +36,7 @@ class Fields(collections.abc.Sequence):
         return len(self._fields)
 
 
-@collect_field
+@collect_field(False)
 class ID(SingleColumnField):
     field_name = "ID"
 
@@ -44,7 +48,7 @@ class ID(SingleColumnField):
         return results
 
 
-# @collect_field; ultimately will be a collected field.
+@collect_field(False)
 class CascadeBlock(Field):
     def __init__(self, all_worksheet_columns):
 
@@ -104,7 +108,7 @@ class CascadeSubfield(SingleColumnField):
         return self.subfield_name
 
 
-@collect_field
+@collect_field(False)
 class CascadeLevel(SingleColumnField):
     field_name = "Cascade Level"
 
@@ -112,7 +116,7 @@ class CascadeLevel(SingleColumnField):
         return val.example_results()
 
 
-@collect_field
+@collect_field(False)
 class ReqStatement(SingleColumnField):
     field_name = "Requirement Statement"
 
@@ -120,7 +124,7 @@ class ReqStatement(SingleColumnField):
         return val.example_results()
 
 
-@collect_field
+@collect_field(False)
 class ReqRationale(SingleColumnField):
     field_name = "Requirement Rationale"
 
@@ -128,7 +132,7 @@ class ReqRationale(SingleColumnField):
         return [val.val_cells_not_empty(self._body)]
 
 
-@collect_field
+@collect_field(False)
 class VVStrategy(SingleColumnField):
     field_name = "Verification or Validation Strategy"
 
@@ -136,7 +140,7 @@ class VVStrategy(SingleColumnField):
         return val.example_results()
 
 
-@collect_field
+@collect_field(False)
 class VVResults(SingleColumnField):
     field_name = "Verification or Validation Results"
 
@@ -144,7 +148,7 @@ class VVResults(SingleColumnField):
         return []
 
 
-@collect_field
+@collect_field(False)
 class DOFeatures(SingleColumnField):
     field_name = "Design Output Feature (with CTQ ID #)"
 
@@ -152,7 +156,7 @@ class DOFeatures(SingleColumnField):
         return []
 
 
-@collect_field
+@collect_field(False)
 class CTQ(SingleColumnField):
     field_name = "CTQ? Yes, No, N/A"
 
@@ -160,7 +164,7 @@ class CTQ(SingleColumnField):
         return []
 
 
-@collect_field
+@collect_field(True)
 class Devices(SingleColumnField):
     field_name = "Devices"
 

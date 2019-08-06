@@ -1,19 +1,16 @@
 # --- Standard Library Imports ------------------------------------------------
 import abc
-from contextlib import contextmanager
 from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
+import rtm.main.context_managers as cm
 import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
 from rtm.main.exceptions import UninitializedError
 from rtm.validate import validator_output
-
-
-_worksheet_columns = None
 
 
 class Field(metaclass=abc.ABCMeta):
@@ -34,7 +31,7 @@ class SingleColumnField(Field):
 
         # --- Get matching columns --------------------------------------------
         matching_worksheet_columns = get_matching_worksheet_columns(
-            self._get_worksheet_columns(),
+            cm.worksheet_columns(),
             self.get_field_name()
         )
 
@@ -94,6 +91,8 @@ class SingleColumnField(Field):
 
     @classmethod
     def get_field_name(cls):
+        if cls.field_name is None:
+            raise UninitializedError("A field hasn't implemented a field name yet.")
         return cls.field_name
 
     @staticmethod
@@ -104,14 +103,6 @@ class SingleColumnField(Field):
             )
         else:
             return _worksheet_columns
-
-
-@contextmanager
-def set_worksheet_columns(worksheet_columns):
-    global _worksheet_columns
-    _worksheet_columns = worksheet_columns
-    yield
-    _worksheet_columns = None
 
 
 if __name__ == "__main__":
