@@ -65,7 +65,6 @@ class OutputHeader(ValidatorOutput):
     def __init__(self, header_name):
         self.field_name = header_name
 
-    @abc.abstractmethod
     def print(self) -> None:
         sym = '+'
         box_middle = f"{sym}  {self.field_name}  {sym}"
