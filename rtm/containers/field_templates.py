@@ -32,10 +32,23 @@ class Field(metaclass=abc.ABCMeta):
     def field_found(self):
         return
 
+    @abc.abstractmethod
+    def get_index(self):
+        return
+
+    @abc.abstractmethod
+    def get_min_index_for_following_field(self):
+        return
+
+    @abc.abstractmethod
+    def get_previous_field(self) -> Field:
+        return
+
 
 def add_previous_field_finder(field_class):
 
-    def get_previous_field(self):
+    # --- get previous field --------------------------------------------------
+    def get_previous_field(self: Field) -> Field:
         fields = cm.fields()
         index_prev_field = None
         for index, field in enumerate(fields):
@@ -48,9 +61,20 @@ def add_previous_field_finder(field_class):
             return None
         else:
             return fields[index_prev_field]
-
     setattr(field_class, get_previous_field.__name__, get_previous_field)
 
+    # --- check horizontal sort order -----------------------------------------
+    def check_sort_order(self: Field):
+        previous_field: Field = self.get_previous_field()
+        if previous_field is None:
+            return True
+        elif previous_field.get_min_index_for_following_field() <= self.get_index():
+            return True
+        else:
+            return False
+    setattr(field_class, check_sort_order.__name__, check_sort_order)
+
+    # --- return field --------------------------------------------------------
     return field_class
 
 
@@ -108,18 +132,18 @@ class SingleColumnField(Field):
             return False
         return True
 
-    def _get_index(self):
+    def get_index(self):
         return self._indices[0]
 
-    def validate_position(self, previous_index):
+    def validate_position(self):
         """Check that this field comes after the previous one. Return this column number."""
         if not self.field_found():
             return previous_index
-        if self._get_index() > previous_index:
+        if self.get_index() > previous_index:
             self._correct_position = True
         else:
             self._correct_position = False
-        return self._get_index()
+        return self.get_index()
 
     def get_body(self):
         return self._body
@@ -129,6 +153,9 @@ class SingleColumnField(Field):
         if cls.field_name is None:
             raise UninitializedError("A field hasn't implemented a field name yet.")
         return cls.field_name
+
+    def get_min_index_for_following_field(self):
+        return self.get_index()
 
 
 if __name__ == "__main__":

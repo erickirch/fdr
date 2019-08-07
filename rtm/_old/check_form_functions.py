@@ -120,7 +120,7 @@ def has_three_digits(value):
 def has_six_digits(value):
     # slice string. keep all characters after the first. (removes P)
     value_slice = value[1:]
-    # find the location/_get_index of the hypen within the string.
+    # find the location/get_index of the hypen within the string.
     dash_index = value_slice.find("-")
     # slice string around the hyphen. this will leave only the numeric characters if ID if formatted correctly
     value_slice = value_slice[:dash_index] + value_slice[dash_index + 1:]
@@ -311,9 +311,9 @@ def has_w_slash_c(value):
 def is_windchill_number_present(value):
     # remove all spaces
     value = value.replace(" ", "")
-    # find _get_index of 000. windchill numbers have at least three leading zeros.
+    # find get_index of 000. windchill numbers have at least three leading zeros.
     leading_zeros_index = value.find("000")
-    # slice the string starting at that _get_index until the end of the string
+    # slice the string starting at that get_index until the end of the string
     value = value[leading_zeros_index:]
     # slice string again into two parts. first 10 characters (possible WC number) and remaining characters
     wc_number = value[:9]
@@ -345,10 +345,10 @@ def has_ctq_id(value):
 def has_ctq_numbers(value):
     ctq_count = 0
     number_count = 0
-    # find _get_index of first CTQ ID
+    # find get_index of first CTQ ID
     ctq_index = value.lower().find("ctq")
     # while loop will keep searching for CTQ IDs until there are none. the string is sliced, checked for set_and_get_funcs,
-    # searched for a new ID, _get_index found for new CTQ ID, repeat.
+    # searched for a new ID, get_index found for new CTQ ID, repeat.
     while ctq_index != -1:
         # add 1 to ctq_counter, if there were no CTQs, the while condition would not be met.
         ctq_count += 1
@@ -461,7 +461,7 @@ def child_ids(value):
     value = value.replace(" ", "")
     # while there are #child in string. string will be sliced after each ID is retrieved
     while value.find("#Child") != -1:
-        # find the _get_index of the child hashtag
+        # find the get_index of the child hashtag
         hash_index = value.find("#Child")
         value = value[hash_index:]
         # find the beginning of the ID by searching for P
@@ -484,7 +484,7 @@ def parent_ids(value):
     value = value.replace(" ", "")
     # while there are #child in string. string will be sliced after each ID is retrieved
     while value.find("#Parent") != -1:
-        # find the _get_index of the child hashtag
+        # find the get_index of the child hashtag
         hash_index = value.find("#Parent")
         # slice value_at_index from the hash_index + 2 (to account for capital P at the beginning of Parent) to the end
         value = value[hash_index+2:]

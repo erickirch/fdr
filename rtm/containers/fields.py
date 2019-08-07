@@ -96,6 +96,7 @@ class CascadeBlock(ft.Field):
             field_names.append("DO Solution L" + str(i))
         return field_names
 
+    # TODO: eliminate this method
     def validate_position(self, previous_index):
         """
         Check that first subfield comes after the previous one and that
@@ -132,6 +133,9 @@ class CascadeBlock(ft.Field):
 
     def get_body(self):
         return [subfield.get_body() for subfield in self._subfields]
+
+    def get_min_index_for_following_field(self):
+        return self._subfields[-1].get_index()
 
 
 # Not a collected field; rolls up under CascadeBlock
