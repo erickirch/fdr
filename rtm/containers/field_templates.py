@@ -41,44 +41,13 @@ class Field(metaclass=abc.ABCMeta):
         return
 
     @abc.abstractmethod
-    def get_previous_field(self) -> Field:
+    def get_previous_field(self):
         return
 
 
-def add_previous_field_finder(field_class):
-
-    # --- get previous field --------------------------------------------------
-    def get_previous_field(self: Field) -> Field:
-        fields = cm.fields()
-        index_prev_field = None
-        for index, field in enumerate(fields):
-            if self is field:
-                index_prev_field = field - 1
-                break
-        if index_prev_field is None:
-            raise ValueError
-        elif index_prev_field == -1:
-            return None
-        else:
-            return fields[index_prev_field]
-    setattr(field_class, get_previous_field.__name__, get_previous_field)
-
-    # --- check horizontal sort order -----------------------------------------
-    def check_sort_order(self: Field):
-        previous_field: Field = self.get_previous_field()
-        if previous_field is None:
-            return True
-        elif previous_field.get_min_index_for_following_field() <= self.get_index():
-            return True
-        else:
-            return False
-    setattr(field_class, check_sort_order.__name__, check_sort_order)
-
-    # --- return field --------------------------------------------------------
-    return field_class
 
 
-@add_previous_field_finder
+
 class SingleColumnField(Field):
 
     field_name = None
