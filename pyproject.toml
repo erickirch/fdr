@@ -18,6 +18,6 @@ requires-python = ">=3.6"
 requires = ["click", "openpyxl", "colorama"]
 
 [tool.flit.scripts]
-rtm = "rtm.cli:main"
+rtm = "rtm.main.cli:main"
     # The name left of the assignment operator is the shell command that will run the application.
     # Similar to setuptools 'entry points'

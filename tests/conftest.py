@@ -1,29 +1,33 @@
 # --- Standard Library Imports ------------------------------------------------
-import pytest
-from typing import List
 from pathlib import Path
+from typing import List
 
 # --- Third Party Imports -----------------------------------------------------
-# None
+import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.worksheet_columns as wc
-from rtm.fields.validation import example_results
-from rtm.fields.validation_results import ValidationResult
+import rtm.containers.worksheet_columns as wc
+from rtm.validate.validator_output import ValidationResult
 
 
 @pytest.fixture(scope="session")
-def worksheet_columns() -> List[wc.WorksheetColumn]:
+def dummy_worksheet_columns() -> List[wc.WorksheetColumn]:
     headers = [
         "ID",
-        "Devices",
+        "Procedure Step",
+        "User Need",
+        "Design Input",
+        "DO Solution L1",
+        "DO Solution L2",
+        "DO Solution L3",
+        "Cascade Level",
         "Requirement Statement",
         "Requirement Rationale",
-        "Cascade Level",
         "Verification or Validation Strategy",
         "Verification or Validation Results",
         "Design Output Feature (with CTQ ID #)",
         "CTQ? Yes, No, N/A",
+        "Devices",
     ]
     ws_cols = []
     for index, header in enumerate(headers):
@@ -39,15 +43,26 @@ def worksheet_columns() -> List[wc.WorksheetColumn]:
 
 
 @pytest.fixture(scope="session")
+def ws_cols_from_test_xlsx(rtm_path) -> List[wc.WorksheetColumn]:
+    return wc.read_worksheet_columns(rtm_path, "Procedure Based Requirements")
+
+
+@pytest.fixture(scope="session")
 def rtm_path() -> Path:
     return Path(__file__).parent / "test_rtm.xlsx"
 
 
 @pytest.fixture(scope="session")
 def example_val_results() -> List[ValidationResult]:
-    return example_results()
+    explanation = 'This is an example explanation'
+    examples = [
+        ValidationResult('Pass', 'Pass Example', explanation),
+        ValidationResult('Warning', 'Warning Example', explanation),
+        ValidationResult('Error', 'Error Example', explanation),
+    ]
+    return examples
 
 
 @pytest.fixture(scope="session")
 def ws_cols_from_test_validation(rtm_path):
-    return wc.get_worksheet_columns(rtm_path, worksheet_name='test_validation')
+    return wc.read_worksheet_columns(rtm_path, worksheet_name='test_validation')

@@ -34,8 +34,8 @@ def get_dicts_from_excel(path):
         for row in range(2, ws.max_row + 1):
             row_contents = dict()
             for col in range(1, ws.max_column + 1):
-                key = ws.cell(1, col).value
-                value = ws.cell(row, col).value
+                key = ws.cell(1, col).value_at_index
+                value = ws.cell(row, col).value_at_index
                 logging.debug(value)
                 row_contents[key] = value
             worksheet_contents.append(row_contents)

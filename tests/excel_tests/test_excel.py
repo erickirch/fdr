@@ -6,13 +6,13 @@ from pathlib import Path
 @pytest.mark.skip("These are only experiments that slow down the real tests")
 def test_integers_from_excel():
     path = Path(__file__).parent / "test.xlsx"
-    wb = openpyxl.load_workbook(filename=path, data_only=True)  # NOTE: data_only flag used for value instead of formula
+    wb = openpyxl.load_workbook(filename=path, data_only=True)  # NOTE: data_only flag used for value_at_index instead of formula
     ws = wb["integer"]
     start_row = 1
     end_row = ws.max_row
     for row in range(start_row, end_row + 1):
-        assert_type = ws.cell(row, 1).value
-        value = ws.cell(row, 2).value
+        assert_type = ws.cell(row, 1).value_at_index
+        value = ws.cell(row, 2).value_at_index
         try:
             value = int(value)
         except (TypeError, ValueError):
@@ -35,8 +35,8 @@ def test_string_comparison():
     start_row = 1
     end_row = ws.max_row
     for row in range(start_row, end_row + 1):
-        assert_type = ws.cell(row, 1).value
-        cell_value = ws.cell(row, 2).value
+        assert_type = ws.cell(row, 1).value_at_index
+        cell_value = ws.cell(row, 2).value_at_index
         if assert_type == "pass":
             assert cell_value.replace(" ", "").lower().find("w/c") != -1
         elif assert_type == "fail":
@@ -54,8 +54,8 @@ def test_multi_line_cells():
     start_row = 1
     end_row = ws.max_row
     for row in range(start_row, end_row + 1):
-        assert_type = ws.cell(row, 1).value
-        cell_value = ws.cell(row, 2).value
+        assert_type = ws.cell(row, 1).value_at_index
+        cell_value = ws.cell(row, 2).value_at_index
         if assert_type == "pass":
             assert cell_value.replace("\n", "") == "line 1 line 2 line 3"
         elif assert_type == "fail":
