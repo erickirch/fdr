@@ -74,7 +74,6 @@ class ID(ft.SingleColumnField):
 
 
 @Fields.collect_field()
-@ft.add_previous_field_finder
 class CascadeBlock(ft.Field):
     def __init__(self):
 

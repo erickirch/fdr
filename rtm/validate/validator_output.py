@@ -74,3 +74,13 @@ class OutputHeader(ValidatorOutput):
         click.secho(box_middle, bold=True)
         click.secho(box_horizontal, bold=True)
         click.echo()
+
+
+def example_val_results() -> List[ValidationResult]:
+    explanation = 'This is an example explanation'
+    examples = [
+        ValidationResult('Pass', 'Pass Example', explanation),
+        ValidationResult('Warning', 'Warning Example', explanation),
+        ValidationResult('Error', 'Error Example', explanation),
+    ]
+    return examples

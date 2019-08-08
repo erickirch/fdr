@@ -31,7 +31,7 @@ def val_column_exist(field_found) -> ValidationResult:
 
 def val_column_sort(field: ft.Field) -> ValidationResult:
     """Does the argument field actually appear after the one it's supposed to?"""
-    title = "Field Order"
+    title = "Left/Right Order"
 
     field_left = check.get_expected_field_left()
     if field_left is None:
@@ -39,8 +39,8 @@ def val_column_sort(field: ft.Field) -> ValidationResult:
         score = 'Pass'
         explanation = 'This field appears to the left of all the others'
     elif field_left.get_min_index_for_field_right() <= field.get_index():
+        # argument field is to the right of its expected left-hand neighbor
         score = 'Pass'
-        # TODO get the name of field left
         explanation = f'This field comes after the {field_left.get_name()} field as it should'
     else:
         score = 'Error'

@@ -11,7 +11,7 @@ import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
 from rtm.main.exceptions import UninitializedError
 from rtm.validate import validator_output
-import tests.conftest as conftest
+# import tests.conftest as conftest
 
 
 class Field(metaclass=abc.ABCMeta):

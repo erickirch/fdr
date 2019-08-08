@@ -7,7 +7,7 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.fields as fs
-import rtm.main.context_managers as cm
+import rtm.main.context_managers as context
 from rtm.main.exceptions import UninitializedError
 from rtm.validate.checks import cell_empty
 
@@ -86,7 +86,7 @@ class WorkItem:
 class WorkItems(collections.abc.Sequence):
 
     def __init__(self):
-        fields = cm.fields()
+        fields = context.fields()
         cascade_block = fields.get_matching_field(fs.CascadeBlock)
         self._initialize_work_items(cascade_block.get_body())
         for work_item in self._work_items:

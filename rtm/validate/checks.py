@@ -4,7 +4,7 @@ these "check" functions perform smaller tasks, like checking individual cells.
 """
 
 # --- Standard Library Imports ------------------------------------------------
-# None
+from typing import Optional
 
 # --- Third Party Imports -----------------------------------------------------
 # None
@@ -12,6 +12,7 @@ these "check" functions perform smaller tasks, like checking individual cells.
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.main.context_managers as cm
 import rtm.containers.field_templates as ft
+# Field = ft.Field
 
 
 def cell_empty(value) -> bool:
@@ -23,7 +24,7 @@ def cell_empty(value) -> bool:
     return False
 
 
-def get_expected_field_left(field: ft.Field) -> ft.Field:
+def get_expected_field_left(field: ft.SingleColumnField) -> Optional[ft.SingleColumnField]:
     """Return the field object that *should* come before the argument field object."""
     initialized_fields = cm.fields()
     index_prev_field = None
