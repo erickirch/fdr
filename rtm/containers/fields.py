@@ -61,7 +61,10 @@ class Fields(collections.abc.Sequence):
 
 @Fields.collect_field()
 class ID(ft.SingleColumnField):
-    field_name = "ID"
+
+    def __init__(self):
+        self.__field_name = "ID"
+        super().__init__()
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         results = [
@@ -87,7 +90,6 @@ class CascadeBlock(ft.Field):
         # --- Get All Matching Columns ----------------------------------------
         # --- Set Defaults ----------------------------------------------------
         # --- Override defaults if matches are found --------------------------
-        pass
 
     @staticmethod
     def _get_subfield_names():
@@ -134,23 +136,28 @@ class CascadeBlock(ft.Field):
     def get_body(self):
         return [subfield.get_body() for subfield in self._subfields]
 
-    def get_min_index_for_following_field(self):
+    def get_min_index_for_field_right(self):
         return self._subfields[-1].get_index()
+
+    def get_name(self):
+        return 'Cascade Block'
 
 
 # Not a collected field; rolls up under CascadeBlock
 class CascadeSubfield(ft.SingleColumnField):
     def __init__(self, subfield_name):
-        self._subfield_name = subfield_name
+        self._name = subfield_name
         super().__init__()
 
-    def get_field_name(self):
-        return self._subfield_name
+    def get_name(self):
+        return self._name
 
 
 @Fields.collect_field()
 class CascadeLevel(ft.SingleColumnField):
-    field_name = "Cascade Level"
+    def __init__(self):
+        self.__field_name = "Cascade Level"
+        super().__init__()
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return val.example_results()
@@ -158,7 +165,9 @@ class CascadeLevel(ft.SingleColumnField):
 
 @Fields.collect_field()
 class ReqStatement(ft.SingleColumnField):
-    field_name = "Requirement Statement"
+    def __init__(self):
+        self.__field_name = "Requirement Statement"
+        super().__init__()
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return val.example_results()
@@ -166,7 +175,9 @@ class ReqStatement(ft.SingleColumnField):
 
 @Fields.collect_field()
 class ReqRationale(ft.SingleColumnField):
-    field_name = "Requirement Rationale"
+    def __init__(self):
+        self.__field_name = "Requirement Rationale"
+        super().__init__()
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return [val.val_cells_not_empty(self._body)]
@@ -174,7 +185,9 @@ class ReqRationale(ft.SingleColumnField):
 
 @Fields.collect_field()
 class VVStrategy(ft.SingleColumnField):
-    field_name = "Verification or Validation Strategy"
+    def __init__(self):
+        self.__field_name = "Verification or Validation Strategy"
+        super().__init__()
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return val.example_results()
@@ -182,15 +195,18 @@ class VVStrategy(ft.SingleColumnField):
 
 @Fields.collect_field()
 class VVResults(ft.SingleColumnField):
-    field_name = "Verification or Validation Results"
-
+    def __init__(self):
+        self.__field_name = "Verification or Validation Results"
+        super().__init__()
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return []
 
 
 @Fields.collect_field()
 class DOFeatures(ft.SingleColumnField):
-    field_name = "Design Output Feature (with CTQ ID #)"
+    def __init__(self):
+        self.__field_name = "Design Output Feature (with CTQ ID #)"
+        super().__init__()
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
@@ -198,7 +214,9 @@ class DOFeatures(ft.SingleColumnField):
 
 @Fields.collect_field()
 class CTQ(ft.SingleColumnField):
-    field_name = "CTQ? Yes, No, N/A"
+    def __init__(self):
+        self.__field_name = "CTQ? Yes, No, N/A"
+        super().__init__()
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
@@ -206,7 +224,9 @@ class CTQ(ft.SingleColumnField):
 
 @Fields.collect_field()
 class Devices(ft.SingleColumnField):
-    field_name = "Devices"
+    def __init__(self):
+        self.__field_name = "Devices"
+        super().__init__()
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return [val.val_cells_not_empty(self._body)]

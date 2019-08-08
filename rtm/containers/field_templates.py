@@ -37,27 +37,27 @@ class Field(metaclass=abc.ABCMeta):
         return
 
     @abc.abstractmethod
-    def get_min_index_for_following_field(self):
+    def get_min_index_for_field_right(self):
         return
 
     @abc.abstractmethod
     def get_previous_field(self):
         return
 
-
+    @abc.abstractmethod
+    def get_name(self):
+        return
 
 
 
 class SingleColumnField(Field):
-
-    field_name = None
 
     def __init__(self):
 
         # --- Get matching columns --------------------------------------------
         matching_worksheet_columns = get_matching_worksheet_columns(
             cm.worksheet_columns(),
-            self.get_field_name()
+            self.get_name()
         )
 
         # --- Set Defaults ----------------------------------------------------
@@ -80,7 +80,7 @@ class SingleColumnField(Field):
 
         # --- Generate the minimum output message -----------------------------
         self._val_results = [
-            validator_output.OutputHeader(self.get_field_name()),  # Start with header
+            validator_output.OutputHeader(self.get_name()),  # Start with header
             val.val_column_exist(field_found),
         ]
 
@@ -117,13 +117,10 @@ class SingleColumnField(Field):
     def get_body(self):
         return self._body
 
-    @classmethod
-    def get_field_name(cls):
-        if cls.field_name is None:
-            raise UninitializedError("A field hasn't implemented a field name yet.")
-        return cls.field_name
+    def get_name(self):
+        return self._name
 
-    def get_min_index_for_following_field(self):
+    def get_min_index_for_field_right(self):
         return self.get_index()
 
 

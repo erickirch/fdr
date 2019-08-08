@@ -23,7 +23,7 @@ def cell_empty(value) -> bool:
     return False
 
 
-def get_previous_field(field: ft.Field) -> ft.Field:
+def get_expected_field_left(field: ft.Field) -> ft.Field:
     """Return the field object that *should* come before the argument field object."""
     initialized_fields = cm.fields()
     index_prev_field = None
@@ -37,14 +37,3 @@ def get_previous_field(field: ft.Field) -> ft.Field:
         return None
     else:
         return initialized_fields[index_prev_field]
-
-
-def check_sort_order(self: ft.Field):
-    """Does the argument field actually appear after the one it's supposed to?"""
-    previous_field: ft.Field = self.get_previous_field()
-    if previous_field is None:
-        return True
-    elif previous_field.get_min_index_for_following_field() <= self.get_index():
-        return True
-    else:
-        return False

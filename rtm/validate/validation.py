@@ -11,9 +11,11 @@ from typing import List
 
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.validate.checks import cell_empty
+import rtm.validate.checks as check
 from rtm.validate.validator_output import ValidationResult
 from rtm.containers.work_items import WorkItems
 from rtm.main.exceptions import Uninitialized
+import rtm.containers.field_templates as ft
 
 
 def val_column_exist(field_found) -> ValidationResult:
@@ -27,27 +29,22 @@ def val_column_exist(field_found) -> ValidationResult:
     return ValidationResult(score, title, explanation)
 
 
-def val_column_sort(correct_position: bool, previous_field_name: str) -> ValidationResult:
-    """
-    Report on horizontal sorting of a single field.
-    :param correct_position: boolean stating whether this field came after its predecessor
-    :param previous_field_name: name of field expected to come before this one. None if this is the first field.
-    :return: ValidationResult
-    """
+def val_column_sort(field: ft.Field) -> ValidationResult:
+    """Does the argument field actually appear after the one it's supposed to?"""
     title = "Field Order"
-    if correct_position and previous_field_name is None:
-        # This field appears before all the others
+
+    field_left = check.get_expected_field_left()
+    if field_left is None:
+        # argument field is supposed to be all the way to the left. It's always in the correct position.
         score = 'Pass'
         explanation = 'This field appears to the left of all the others'
-    elif not correct_position and previous_field_name is None:
-        # This field should be the first and should always pass, but something is wrong with the code
-        raise IndexError
-    elif correct_position:
+    elif field_left.get_min_index_for_field_right() <= field.get_index():
         score = 'Pass'
-        explanation = f'This field comes after the {previous_field_name} field as it should'
+        # TODO get the name of field left
+        explanation = f'This field comes after the {field_left.get_name()} field as it should'
     else:
         score = 'Error'
-        explanation = f'This field should come after {previous_field_name}'
+        explanation = f'This field should come after {field_left.get_name()}'
     return ValidationResult(score, title, explanation)
 
 
