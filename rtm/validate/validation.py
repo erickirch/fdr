@@ -118,6 +118,7 @@ def get_row(index):
     return index + 2
 
 
+# TODO: replace with something more maintainable / straightforward
 cell_validation_functions = [globals()[name] for name in globals() if name.startswith('val_cells_')]
 
 
