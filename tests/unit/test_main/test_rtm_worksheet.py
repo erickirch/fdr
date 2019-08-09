@@ -18,11 +18,5 @@ def test_get_worksheet(rtm_path):
         assert isinstance(ws_col, wc.WorksheetColumn)
 
 
-def test_init_rtm_worksheet(rtm_path):
-    rtm_worksheet = RTMWorksheet()
-    for field in rtm_worksheet.fields:
-        assert isinstance(field, Field)
-
-
 if __name__ == "__main__":
     pass
