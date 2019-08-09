@@ -5,19 +5,34 @@
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.main.context_managers as cm
+import rtm.main.context_managers as context
 import rtm.containers.field_templates as fb
 from rtm.containers.fields import Fields
 
 
-def test_init_with_good_data(dummy_worksheet_columns):
+def test_init_fields_list(dummy_worksheet_columns):
+    """Test internals of Fields class constructor"""
     field_classes = Fields.get_field_classes()
-    with cm.worksheet_columns.set(dummy_worksheet_columns):
-        field = field_class()
-        assert field.field_found()
-        if issubclass(field_class, fb.SingleColumnField):
-            assert len(field._indices) == dups_count
+    with context.worksheet_columns.set(dummy_worksheet_columns):
+        fields = [field_class() for field_class in field_classes]
+        fields_found = [field for field in fields if field.field_found()]
+        assert len(fields_found) == len(fields)
 
+
+def test_init_fields_class(dummy_worksheet_columns):
+    """Test constructor of Fields class"""
+    with context.worksheet_columns.set(dummy_worksheet_columns):
+        fields = Fields()
+        fields_found = [field for field in fields if field.field_found()]
+        assert len(fields_found) == len(fields)
+
+
+def test_fields_reverse(dummy_worksheet_columns):
+    with context.worksheet_columns.set(dummy_worksheet_columns):
+        fields = Fields()
+        fields_reverse = list(reversed(fields))
+        assert fields[0] == fields_reverse[-1]
+        assert len(fields) == len(fields_reverse)
 
 # @pytest.mark.parametrize("field_class", Fields.get_field_classes())
 # @pytest.mark.parametrize("dups_count", [1, 2])
