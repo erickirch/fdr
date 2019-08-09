@@ -9,9 +9,7 @@ from typing import List
 import rtm.main.context_managers as cm
 import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
-from rtm.main.exceptions import UninitializedError
 from rtm.validate import validator_output
-import tests.conftest as conftest
 
 
 class Field(metaclass=abc.ABCMeta):
@@ -37,27 +35,24 @@ class Field(metaclass=abc.ABCMeta):
         return
 
     @abc.abstractmethod
-    def get_min_index_for_following_field(self):
+    def get_min_index_for_field_right(self):
         return
 
     @abc.abstractmethod
-    def get_previous_field(self):
+    def get_name(self):
         return
-
-
-
 
 
 class SingleColumnField(Field):
 
-    field_name = None
+    def __init__(self, name):
 
-    def __init__(self):
+        self._name = name
 
         # --- Get matching columns --------------------------------------------
         matching_worksheet_columns = get_matching_worksheet_columns(
             cm.worksheet_columns(),
-            self.get_field_name()
+            self.get_name()
         )
 
         # --- Set Defaults ----------------------------------------------------
@@ -80,7 +75,7 @@ class SingleColumnField(Field):
 
         # --- Generate the minimum output message -----------------------------
         self._val_results = [
-            validator_output.OutputHeader(self.get_field_name()),  # Start with header
+            validator_output.OutputHeader(self.get_name()),  # Start with header
             val.val_column_exist(field_found),
         ]
 
@@ -90,7 +85,7 @@ class SingleColumnField(Field):
             self._val_results += self._validation_specific_to_this_field()
 
     def _validation_specific_to_this_field(self) -> List[validator_output.ValidatorOutput]:
-        return conftest.example_val_results()
+        return validator_output.example_val_results()
 
     def print(self):
         for result in self._val_results:
@@ -104,26 +99,13 @@ class SingleColumnField(Field):
     def get_index(self):
         return self._indices[0]
 
-    def validate_position(self):
-        """Check that this field comes after the previous one. Return this column number."""
-        if not self.field_found():
-            return previous_index
-        if self.get_index() > previous_index:
-            self._correct_position = True
-        else:
-            self._correct_position = False
-        return self.get_index()
-
     def get_body(self):
         return self._body
 
-    @classmethod
-    def get_field_name(cls):
-        if cls.field_name is None:
-            raise UninitializedError("A field hasn't implemented a field name yet.")
-        return cls.field_name
+    def get_name(self):
+        return self._name
 
-    def get_min_index_for_following_field(self):
+    def get_min_index_for_field_right(self):
         return self.get_index()
 
 

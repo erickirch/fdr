@@ -1,3 +1,6 @@
+"""
+Unit tests for validation.py functions
+"""
 # --- Standard Library Imports ------------------------------------------------
 # None
 
@@ -7,6 +10,7 @@ import pytest
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.worksheet_columns as wc
 import rtm.validate.validation as val
+import rtm.main.context_managers as context
 
 
 def test_column_exist(capsys):
@@ -21,11 +25,21 @@ def test_column_exist(capsys):
         assert captured.out == item[1]
 
 
-def test_column_sort(capsys):
-    result = val.val_column_sort(True, 'Butter Panzer')
-    result.print()
-    captured = capsys.readouterr()
-    assert captured.out == f'\tPass\tFIELD ORDER - This field comes after the Butter Panzer field as it should\n'
+# TODO parameterize inputs:
+#   Two lists of fields (context manager)
+#       1) fields in correct order (all pass)
+#       2) fields in opposite order (all fail except for the first)
+#   field to be searched for
+#   each field must be initialized.
+def test_column_sort(initialized_fields_simple):
+    with context.fields.set(initialized_fields_simple):
+        scores_actual = [
+            val.val_column_sort(field)._score
+            for field
+            in initialized_fields_simple
+        ]
+    scores_should = ['Pass']*len(scores_actual)
+    assert scores_actual == scores_should
 
 
 def test_cells_not_empty():

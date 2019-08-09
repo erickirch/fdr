@@ -25,7 +25,7 @@ def test_init_with_good_data(dummy_worksheet_columns, field_class, dups_count):
 @pytest.mark.parametrize("field_class", Fields.get_field_classes())
 def test_init_without_matching_col(worksheet_columns, field_class):
     """Field should initialize to 'not found'"""
-    name = field_class.get_field_name()
+    name = field_class.get_name()
     ws_cols = [ws_col for ws_col in worksheet_columns if ws_col.header.lower() != name.lower()]
     field = field_class(ws_cols)
     assert not field.field_found()

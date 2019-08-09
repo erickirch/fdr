@@ -10,10 +10,8 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from rtm.validate.checks import cell_empty
+import rtm.validate.checks as check
 from rtm.validate.validator_output import ValidationResult
-from rtm.containers.work_items import WorkItems
-from rtm.main.exceptions import Uninitialized
 
 
 def val_column_exist(field_found) -> ValidationResult:
@@ -27,27 +25,22 @@ def val_column_exist(field_found) -> ValidationResult:
     return ValidationResult(score, title, explanation)
 
 
-def val_column_sort(correct_position: bool, previous_field_name: str) -> ValidationResult:
-    """
-    Report on horizontal sorting of a single field.
-    :param correct_position: boolean stating whether this field came after its predecessor
-    :param previous_field_name: name of field expected to come before this one. None if this is the first field.
-    :return: ValidationResult
-    """
-    title = "Field Order"
-    if correct_position and previous_field_name is None:
-        # This field appears before all the others
+def val_column_sort(field) -> ValidationResult:
+    """Does the argument field actually appear after the one it's supposed to?"""
+    title = "Left/Right Order"
+
+    field_left = check.get_expected_field_left(field)
+    if field_left is None:
+        # argument field is supposed to be all the way to the left. It's always in the correct position.
         score = 'Pass'
         explanation = 'This field appears to the left of all the others'
-    elif not correct_position and previous_field_name is None:
-        # This field should be the first and should always pass, but something is wrong with the code
-        raise IndexError
-    elif correct_position:
+    elif field_left.get_min_index_for_field_right() <= field.get_index():
+        # argument field is to the right of its expected left-hand neighbor
         score = 'Pass'
-        explanation = f'This field comes after the {previous_field_name} field as it should'
+        explanation = f'This field comes after the {field_left.get_name()} field as it should'
     else:
         score = 'Error'
-        explanation = f'This field should come after {previous_field_name}'
+        explanation = f'This field should come after {field_left.get_name()}'
     return ValidationResult(score, title, explanation)
 
 
@@ -55,7 +48,7 @@ def val_cells_not_empty(values) -> ValidationResult:
     title = "Not Empty"
     indices = []
     for index, value in enumerate(values):
-        if cell_empty(value):
+        if check.cell_empty(value):
             indices.append(index)
     if not indices:
         score = 'Pass'
@@ -66,7 +59,7 @@ def val_cells_not_empty(values) -> ValidationResult:
     return ValidationResult(score, title, explanation, indices)
 
 
-def val_cascade_block_only_one_entry(work_items: WorkItems) -> ValidationResult:
+def val_cascade_block_only_one_entry(work_items):
     title = "Single Entry"
     indices = []
     for work_item in work_items:
@@ -82,7 +75,7 @@ def val_cascade_block_only_one_entry(work_items: WorkItems) -> ValidationResult:
     return ValidationResult(score, title, explanation, indices)
 
 
-def val_cascade_block_x_or_f(work_items: WorkItems) -> ValidationResult:
+def val_cascade_block_x_or_f(work_items) -> ValidationResult:
     title = "X or F"
     indices = []
     acceptable_entries = ['X', 'F']
@@ -98,7 +91,7 @@ def val_cascade_block_x_or_f(work_items: WorkItems) -> ValidationResult:
     return ValidationResult(score, title, explanation, indices)
 
 
-def val_cascade_block_use_all_columns(work_items: WorkItems, subfield_count: int) -> ValidationResult:
+def val_cascade_block_use_all_columns(work_items, subfield_count: int) -> ValidationResult:
     title = "Use All Columns"
     indices = []
     max_position = max(work_item.position for work_item in work_items)
