@@ -25,48 +25,25 @@ def test_column_exist(capsys):
         assert captured.out == item[1]
 
 
-# TODO parameterize inputs:
-#   Two lists of fields (context manager)
-#       1) fields in correct order (all pass)
-#       2) fields in opposite order (all fail except for the first)
-#   field to be searched for
-#   each field must be initialized.
-def test_column_sort(initialized_fields_simple):
+@pytest.mark.parametrize('reverse', [False, True])
+def test_column_sort(initialized_fields_simple, reverse):
 
-    # --- Test in correct order -----------------------------------------------
-    with context.fields.set(initialized_fields_simple):
+    if reverse:
+        fields = list(reversed(initialized_fields_simple))
+        scores_should = ['Pass'] + ['Error'] * (len(fields) - 1)
+    else:
+        fields = initialized_fields_simple
+        scores_should = ['Pass'] * len(fields)
+
+    with context.fields.set(fields):
         scores_actual = [
             val.val_column_sort(field)._score
             for field
-            in initialized_fields_simple
+            in fields
         ]
-    scores_should = ['Pass'] * len(scores_actual)
+
     assert len(scores_actual) > 0
     assert scores_actual == scores_should
-
-    # --- Simulate incorrect order --------------------------------------------
-    fields_reversed = list(reversed(initialized_fields_simple))
-    with context.fields.set(fields_reversed):
-        scores_actual = [
-            val.val_column_sort(field)._score
-            for field
-            in fields_reversed
-        ]
-    scores_should = ['Pass'] + ['Error'] * (len(scores_actual) - 1)
-    assert len(scores_actual) > 0
-    assert scores_actual == scores_should
-
-
-# def test_column_sort_reverse(initialized_fields_simple):
-#     reversed_fields = reversed(initialized_fields_simple)
-#     with context.fields.set(reversed_fields):
-#         scores_actual = [
-#             val.val_column_sort(field)._score
-#             for field
-#             in initialized_fields_simple
-#         ]
-#     scores_should = ['Pass'] + ['Error']*(len(scores_actual) - 1)
-#     assert scores_actual == scores_should
 
 
 def test_cells_not_empty():
