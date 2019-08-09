@@ -32,14 +32,30 @@ def test_column_exist(capsys):
 #   field to be searched for
 #   each field must be initialized.
 def test_column_sort(initialized_fields_simple):
+    print('hello')
+    testing = initialized_fields_simple[0]
+    print(initialized_fields_simple)
+    print('bye')
     with context.fields.set(initialized_fields_simple):
         scores_actual = [
             val.val_column_sort(field)._score
             for field
             in initialized_fields_simple
         ]
-    scores_should = ['Pass']*len(scores_actual)
+    scores_should = ['Pass']*3#len(scores_actual)
     assert scores_actual == scores_should
+
+
+# def test_column_sort_reverse(initialized_fields_simple):
+#     reversed_fields = reversed(initialized_fields_simple)
+#     with context.fields.set(reversed_fields):
+#         scores_actual = [
+#             val.val_column_sort(field)._score
+#             for field
+#             in initialized_fields_simple
+#         ]
+#     scores_should = ['Pass'] + ['Error']*(len(scores_actual) - 1)
+#     assert scores_actual == scores_should
 
 
 def test_cells_not_empty():

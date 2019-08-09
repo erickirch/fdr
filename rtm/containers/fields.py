@@ -39,9 +39,6 @@ class Fields(collections.abc.Sequence):
     # --- Object handling -----------------------------------------------------
 
     def __init__(self):
-        self._fields = []
-
-    def initialize(self):
         self._fields = [field_class() for field_class in self.get_field_classes()]
 
     def get_matching_field(self, field_class):
@@ -72,7 +69,8 @@ class ID(ft.SingleColumnField):
         return results
 
 
-@Fields.collect_field()
+# TODO
+@Fields.collect_field(False)
 class CascadeBlock(ft.Field):
     def __init__(self):
 
@@ -112,7 +110,7 @@ class CascadeBlock(ft.Field):
         """
         if index=0, level must == 0. If not, error
         """
-        work_items = context.work_items()
+        work_items = context.work_items.get()
         validation_outputs = [
             OutputHeader(self.get_name()),
             val.val_cascade_block_only_one_entry(work_items),

@@ -6,7 +6,7 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.main.context_managers as cm
+import rtm.main.context_managers as context
 import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
 from rtm.validate import validator_output
@@ -51,7 +51,7 @@ class SingleColumnField(Field):
 
         # --- Get matching columns --------------------------------------------
         matching_worksheet_columns = get_matching_worksheet_columns(
-            cm.worksheet_columns(),
+            context.worksheet_columns.get(),
             self.get_name()
         )
 

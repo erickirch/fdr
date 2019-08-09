@@ -10,16 +10,25 @@ import rtm.containers.field_templates as fb
 from rtm.containers.fields import Fields
 
 
-@pytest.mark.parametrize("field_class", Fields.get_field_classes())
-@pytest.mark.parametrize("dups_count", [1, 2])
-def test_init_with_good_data(dummy_worksheet_columns, field_class, dups_count):
-    """Field should successfully initialize with two matching column"""
-    worksheet_columns = dummy_worksheet_columns * dups_count
-    with cm.worksheet_columns.set(worksheet_columns):
+def test_init_with_good_data(dummy_worksheet_columns):
+    field_classes = Fields.get_field_classes()
+    with cm.worksheet_columns.set(dummy_worksheet_columns):
         field = field_class()
         assert field.field_found()
         if issubclass(field_class, fb.SingleColumnField):
             assert len(field._indices) == dups_count
+
+
+# @pytest.mark.parametrize("field_class", Fields.get_field_classes())
+# @pytest.mark.parametrize("dups_count", [1, 2])
+# def test_init_with_good_data(dummy_worksheet_columns, field_class, dups_count):
+#     """Field should successfully initialize with two matching column"""
+#     worksheet_columns = dummy_worksheet_columns * dups_count
+#     with context.worksheet_columns.set(worksheet_columns):
+#         field = field_class()
+#         assert field.field_found()
+#         if issubclass(field_class, fb.SingleColumnField):
+#             assert len(field._indices) == dups_count
 
 
 @pytest.mark.parametrize("field_class", Fields.get_field_classes())
