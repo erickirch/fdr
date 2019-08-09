@@ -11,8 +11,6 @@ from typing import Optional
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.main.context_managers as cm
-import rtm.containers.field_templates as ft
-# Field = ft.Field
 
 
 def cell_empty(value) -> bool:
@@ -24,7 +22,7 @@ def cell_empty(value) -> bool:
     return False
 
 
-def get_expected_field_left(field: ft.SingleColumnField) -> Optional[ft.SingleColumnField]:
+def get_expected_field_left(field):
     """Return the field object that *should* come before the argument field object."""
     initialized_fields = cm.fields()
     index_prev_field = None

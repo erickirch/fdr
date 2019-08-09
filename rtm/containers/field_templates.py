@@ -9,9 +9,7 @@ from typing import List
 import rtm.main.context_managers as cm
 import rtm.validate.validation as val
 from rtm.containers.worksheet_columns import get_matching_worksheet_columns
-from rtm.main.exceptions import UninitializedError
 from rtm.validate import validator_output
-# import tests.conftest as conftest
 
 
 class Field(metaclass=abc.ABCMeta):
@@ -41,18 +39,15 @@ class Field(metaclass=abc.ABCMeta):
         return
 
     @abc.abstractmethod
-    def get_previous_field(self):
-        return
-
-    @abc.abstractmethod
     def get_name(self):
         return
 
 
-
 class SingleColumnField(Field):
 
-    def __init__(self):
+    def __init__(self, name):
+
+        self._name = name
 
         # --- Get matching columns --------------------------------------------
         matching_worksheet_columns = get_matching_worksheet_columns(
@@ -90,7 +85,7 @@ class SingleColumnField(Field):
             self._val_results += self._validation_specific_to_this_field()
 
     def _validation_specific_to_this_field(self) -> List[validator_output.ValidatorOutput]:
-        return conftest.example_val_results()
+        return validator_output.example_val_results()
 
     def print(self):
         for result in self._val_results:
@@ -103,16 +98,6 @@ class SingleColumnField(Field):
 
     def get_index(self):
         return self._indices[0]
-
-    def validate_position(self):
-        """Check that this field comes after the previous one. Return this column number."""
-        if not self.field_found():
-            return previous_index
-        if self.get_index() > previous_index:
-            self._correct_position = True
-        else:
-            self._correct_position = False
-        return self.get_index()
 
     def get_body(self):
         return self._body

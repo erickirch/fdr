@@ -6,7 +6,7 @@ from typing import List
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.containers.fields as fs
+from rtm.containers.fields import CascadeBlock
 import rtm.main.context_managers as context
 from rtm.main.exceptions import UninitializedError
 from rtm.validate.checks import cell_empty
@@ -87,7 +87,7 @@ class WorkItems(collections.abc.Sequence):
 
     def __init__(self):
         fields = context.fields()
-        cascade_block = fields.get_matching_field(fs.CascadeBlock)
+        cascade_block = fields.get_matching_field(CascadeBlock)
         self._initialize_work_items(cascade_block.get_body())
         for work_item in self._work_items:
             work_item.find_parent(self._work_items)

@@ -7,7 +7,7 @@ import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.containers.field_templates as ft
-import rtm.main.context_managers as cm
+import rtm.main.context_managers as context
 import rtm.validate.validation as val
 from rtm.validate.validator_output import ValidationResult, OutputHeader
 
@@ -23,7 +23,7 @@ class Fields(collections.abc.Sequence):
         return cls._field_classes
 
     @classmethod
-    def append_field(cls, field_class: ft.Field):
+    def append_field(cls, field_class):
         # if not issubclass(field_class, Field):
         #     raise TypeError
         cls._field_classes.append(field_class)
@@ -44,7 +44,7 @@ class Fields(collections.abc.Sequence):
     def initialize(self):
         self._fields = [field_class() for field_class in self.get_field_classes()]
 
-    def get_matching_field(self, field_class) -> ft.Field:
+    def get_matching_field(self, field_class):
         for _field in self:
             if isinstance(_field, field_class):
                 return _field
@@ -52,7 +52,7 @@ class Fields(collections.abc.Sequence):
 
     # --- Sequence ------------------------------------------------------------
 
-    def __getitem__(self, item) -> ft.Field:
+    def __getitem__(self, item):
         return self._fields[item]
 
     def __len__(self) -> int:
@@ -63,8 +63,7 @@ class Fields(collections.abc.Sequence):
 class ID(ft.SingleColumnField):
 
     def __init__(self):
-        self.__field_name = "ID"
-        super().__init__()
+        super().__init__("ID")
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         results = [
@@ -113,7 +112,7 @@ class CascadeBlock(ft.Field):
         """
         if index=0, level must == 0. If not, error
         """
-        work_items = cm.work_items()
+        work_items = context.work_items()
         validation_outputs = [
             OutputHeader(self.get_name()),
             val.val_cascade_block_only_one_entry(work_items),
@@ -141,12 +140,14 @@ class CascadeBlock(ft.Field):
     def get_name(self):
         return 'Cascade Block'
 
+    def get_index(self):
+        return self._subfields[0].get_index()
+
 
 # Not a collected field; rolls up under CascadeBlock
 class CascadeSubfield(ft.SingleColumnField):
     def __init__(self, subfield_name):
-        self._name = subfield_name
-        super().__init__()
+        super().__init__(subfield_name)
 
     def get_name(self):
         return self._name
@@ -155,8 +156,7 @@ class CascadeSubfield(ft.SingleColumnField):
 @Fields.collect_field()
 class CascadeLevel(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Cascade Level"
-        super().__init__()
+        super().__init__("Cascade Level")
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return val.example_results()
@@ -165,8 +165,7 @@ class CascadeLevel(ft.SingleColumnField):
 @Fields.collect_field()
 class ReqStatement(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Requirement Statement"
-        super().__init__()
+        super().__init__("Requirement Statement")
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return val.example_results()
@@ -175,8 +174,7 @@ class ReqStatement(ft.SingleColumnField):
 @Fields.collect_field()
 class ReqRationale(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Requirement Rationale"
-        super().__init__()
+        super().__init__("Requirement Rationale")
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return [val.val_cells_not_empty(self._body)]
@@ -185,8 +183,7 @@ class ReqRationale(ft.SingleColumnField):
 @Fields.collect_field()
 class VVStrategy(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Verification or Validation Strategy"
-        super().__init__()
+        super().__init__("Verification or Validation Strategy")
 
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return val.example_results()
@@ -195,8 +192,7 @@ class VVStrategy(ft.SingleColumnField):
 @Fields.collect_field()
 class VVResults(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Verification or Validation Results"
-        super().__init__()
+        super().__init__("Verification or Validation Results")
     # def _validation_specific_to_this_field(self) -> List[ValidationResult]:
     #     return []
 
@@ -204,8 +200,7 @@ class VVResults(ft.SingleColumnField):
 @Fields.collect_field()
 class DOFeatures(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Design Output Feature (with CTQ ID #)"
-        super().__init__()
+        super().__init__("Design Output Feature (with CTQ ID #)")
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
@@ -214,8 +209,7 @@ class DOFeatures(ft.SingleColumnField):
 @Fields.collect_field()
 class CTQ(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "CTQ? Yes, No, N/A"
-        super().__init__()
+        super().__init__("CTQ? Yes, No, N/A")
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return []
@@ -224,8 +218,7 @@ class CTQ(ft.SingleColumnField):
 @Fields.collect_field()
 class Devices(ft.SingleColumnField):
     def __init__(self):
-        self.__field_name = "Devices"
-        super().__init__()
+        super().__init__("Devices")
 
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         return [val.val_cells_not_empty(self._body)]
