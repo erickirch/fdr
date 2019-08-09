@@ -10,7 +10,7 @@ from typing import Optional
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-import rtm.main.context_managers as cm
+import rtm.main.context_managers as context
 
 
 def cell_empty(value) -> bool:
@@ -24,7 +24,7 @@ def cell_empty(value) -> bool:
 
 def get_expected_field_left(field):
     """Return the field object that *should* come before the argument field object."""
-    initialized_fields = cm.fields()
+    initialized_fields = context.fields.get()
     index_prev_field = None
     for index, field_current in enumerate(initialized_fields):
         if field is field_current:

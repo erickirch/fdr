@@ -86,7 +86,7 @@ class WorkItem:
 class WorkItems(collections.abc.Sequence):
 
     def __init__(self):
-        fields = context.fields()
+        fields = context.fields.get()
         cascade_block = fields.get_matching_field(CascadeBlock)
         self._initialize_work_items(cascade_block.get_body())
         for work_item in self._work_items:

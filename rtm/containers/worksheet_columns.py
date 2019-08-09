@@ -7,13 +7,16 @@ import openpyxl
 
 # --- Intra-Package Imports ---------------------------------------------------
 from rtm.main.exceptions import RTMValidatorFileError
+import rtm.main.context_managers as context
 
 
 WorksheetColumn = namedtuple("WorksheetColumn", "header body index column")
 
 
-def read_worksheet_columns(path, worksheet_name):
+def read_worksheet_columns(worksheet_name):
     """Return list of WorksheetColumn objects"""
+
+    path = context.path.get()
 
     # --- Get Workbook ----------------------------------------------------
     wb = openpyxl.load_workbook(filename=str(path), read_only=True, data_only=True)
