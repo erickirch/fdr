@@ -75,7 +75,8 @@ def initialized_fields_simple(dummy_worksheet_columns):
         fields = Fields()
     return fields
 
-
-@pytest.fixture(scope="function")
-def initialized_fields_simple_reverse(initialized_fields_simple):
-    return list(reversed(initialized_fields_simple))
+@pytest.fixture(scope='function')
+def fields_not_found():
+    with context.worksheet_columns.set([]):
+        fields = Fields()
+    return fields

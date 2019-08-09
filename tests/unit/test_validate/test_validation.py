@@ -28,12 +28,12 @@ def test_column_exist(capsys):
 @pytest.mark.parametrize('reverse', [False, True])
 def test_column_sort(initialized_fields_simple, reverse):
 
-    if reverse:
-        fields = list(reversed(initialized_fields_simple))
-        scores_should = ['Pass'] + ['Error'] * (len(fields) - 1)
-    else:
+    if not reverse:
         fields = initialized_fields_simple
         scores_should = ['Pass'] * len(fields)
+    else:
+        fields = list(reversed(initialized_fields_simple))
+        scores_should = ['Pass'] + ['Error'] * (len(fields) - 1)
 
     with context.fields.set(fields):
         scores_actual = [
