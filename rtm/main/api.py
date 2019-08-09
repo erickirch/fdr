@@ -11,6 +11,7 @@ import click
 from rtm.main import exceptions as exc
 from rtm.main.exceptions import RTMValidatorError
 from rtm.main.rtm_worksheet import RTMWorksheet
+import rtm.main.context_managers as context
 
 
 def validate(path_option='default'):
@@ -24,7 +25,8 @@ def validate(path_option='default'):
     time.sleep(1)
     try:
         path = get_rtm_path(path_option)
-        worksheet = RTMWorksheet(path)
+        with context.path.set(path):
+            worksheet = RTMWorksheet(path)
         worksheet.validate()
     except RTMValidatorError as e:
         click.echo(e)
