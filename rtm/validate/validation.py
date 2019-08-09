@@ -12,6 +12,23 @@ from typing import List
 # --- Intra-Package Imports ---------------------------------------------------
 import rtm.validate.checks as check
 from rtm.validate.validator_output import ValidationResult
+# for now, import entire validation function library
+from rtm._old.check_form_functions import *
+
+
+def val_starts_with_p(values) -> ValidationResult:
+    title = "Starts with P"
+    indices = []
+    for index, value in enumerate(values):
+        if starts_with_p(value):
+            indices.append(index)
+    if not indices:
+        score = 'Pass'
+        explanation = 'All cells in ID start with P'
+    else:
+        score = 'Error'
+        explanation = 'Action required. The following rows have IDs that don''t start with p'
+        return ValidationResult(score, title, explanation, indices)
 
 
 def val_column_exist(field_found) -> ValidationResult:
@@ -52,7 +69,7 @@ def val_cells_not_empty(values) -> ValidationResult:
             indices.append(index)
     if not indices:
         score = 'Pass'
-        explanation = 'All cells are non-blank'
+        explanation = 'All cells are non-blanks'
     else:
         score = 'Error'
         explanation = 'Action Required. The following rows are blank:'

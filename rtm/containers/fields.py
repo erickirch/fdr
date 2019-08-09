@@ -68,6 +68,7 @@ class ID(ft.SingleColumnField):
     def _validation_specific_to_this_field(self) -> List[ValidationResult]:
         results = [
             val.val_cells_not_empty(self._body),
+            val.val_starts_with_p(self._body),
         ]
         return results
 
