@@ -13,14 +13,14 @@ from typing import List
 import rtm.validate.checks as check
 from rtm.validate.validator_output import ValidationResult
 # for now, import entire validation function library
-from rtm._old.check_form_functions import *
+from rtm._old.rule_functions import *
 
 
 def val_starts_with_p(values) -> ValidationResult:
     title = "Starts with P"
     indices = []
     for index, value in enumerate(values):
-        if starts_with_p(value):
+        if starts_with_p(value) is False:
             indices.append(index)
     if not indices:
         score = 'Pass'
